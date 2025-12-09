@@ -54,14 +54,21 @@ export default function NewsManagement() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!mainImage || !thumbnail) {
+        alert("❌ Please upload both main image and thumbnail!");
+        return;
+      }
+
       const form = new FormData();
       Object.keys(formData).forEach((key) => form.append(key, formData[key]));
-      if (mainImage) form.append("main_image", mainImage);
-      if (thumbnail) form.append("thumbnail", thumbnail);
+      form.append("main_image", mainImage);
+      form.append("thumbnail", thumbnail);
 
-      await axios.post(`${API_BASE_URL}/api/news`, form, {
+      console.log("📤 Uploading news to:", `${API_BASE_URL}/api/news`);
+      const res = await axios.post(`${API_BASE_URL}/api/news`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log("✅ News uploaded successfully:", res.data);
 
       alert("✅ News posted successfully!");
       setFormData({
@@ -73,10 +80,13 @@ export default function NewsManagement() {
       });
       setMainImage(null);
       setThumbnail(null);
+      setPreviewMain(null);
+      setPreviewThumb(null);
       setFormVisible(false);
       fetchNews();
     } catch (error) {
-      console.error("Error posting news:", error);
+      console.error("❌ Error posting news:", error.response?.data || error.message);
+      alert("❌ Error uploading news: " + (error.response?.data?.message || error.message));
     }
   };
 
@@ -99,21 +109,26 @@ export default function NewsManagement() {
     try {
       const form = new FormData();
       Object.keys(formData).forEach((key) => form.append(key, formData[key]));
-  if (mainImage) form.append("main_image", mainImage);
-  if (thumbnail) form.append("thumbnail", thumbnail);
+      if (mainImage) form.append("main_image", mainImage);
+      if (thumbnail) form.append("thumbnail", thumbnail);
 
-      await axios.put(`${API_BASE_URL}/api/news/${selectedNews._id}`, form, {
+      console.log("📤 Updating news:", selectedNews._id);
+      const res = await axios.put(`${API_BASE_URL}/api/news/${selectedNews._id}`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log("✅ News updated successfully:", res.data);
 
       alert("✅ News updated successfully!");
       setEditMode(false);
       setSelectedNews(null);
       setMainImage(null);
       setThumbnail(null);
+      setPreviewMain(null);
+      setPreviewThumb(null);
       fetchNews();
     } catch (error) {
-      console.error("Error updating news:", error);
+      console.error("❌ Error updating news:", error.response?.data || error.message);
+      alert("❌ Error updating news: " + (error.response?.data?.message || error.message));
     }
   };
 
@@ -191,20 +206,30 @@ export default function NewsManagement() {
               ></textarea>
             </div>
             <div className="col-md-6">
-              <label className="form-label fw-semibold">Main Image</label>
+              <label className="form-label fw-semibold">Main Image *</label>
               <input
                 type="file"
+                accept="image/*"
                 className="form-control"
                 onChange={(e) => handleImage(e, "main")}
+                required
               />
+              {previewMain && (
+                <img src={previewMain} alt="Main Preview" style={{maxWidth: "100%", maxHeight: "150px", marginTop: "10px"}} />
+              )}
             </div>
             <div className="col-md-6">
-              <label className="form-label fw-semibold">Thumbnail Image</label>
+              <label className="form-label fw-semibold">Thumbnail Image *</label>
               <input
                 type="file"
+                accept="image/*"
                 className="form-control"
                 onChange={(e) => handleImage(e, "thumb")}
+                required
               />
+              {previewThumb && (
+                <img src={previewThumb} alt="Thumbnail Preview" style={{maxWidth: "100%", maxHeight: "150px", marginTop: "10px"}} />
+              )}
             </div>
             <div className="col-md-12">
               <label className="form-label fw-semibold">External Link (optional)</label>

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import NewsManagement from "./pages/NewsManagement";
 import EventManagement from "./pages/EventManagement";
 import NewspaperManagement from "./pages/NewspaperManagement";
+import BannerManagement from "./pages/BannerManagement";
 import Diagnostic from "./pages/Diagnostic";
 
 function App() {
@@ -60,6 +61,14 @@ function App() {
               element={
                 <AdminLayout>
                   <EventManagement />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/banners"
+              element={
+                <AdminLayout>
+                  <BannerManagement />
                 </AdminLayout>
               }
             />

@@ -1,0 +1,345 @@
+/* Wrapper with background image */
+.hero-wrapper {
+  position: relative;
+  width: 100%;
+  height: 90vh; /* desktop height */
+  background-image: url("../assets/hero-desktop.png"); /* <-- you will replace with your image name */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff;
+}
+
+/* Dark overlay so text is readable */
+.hero-overlay {
+  width: 100%;
+  height: 100%;
+  /* background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.65)
+  ); */
+}
+
+/* Navbar */
+.hero-navbar {
+  padding-top: 18px;
+  padding-bottom: 10px;
+}
+
+.hero-logo .logo-placeholder {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+
+.hero-nav-link {
+  color: #ffffff;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.hero-nav-link:hover {
+  color: #f5c25b;
+}
+
+.hero-search-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid #ffffff80;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.hero-contact {
+  border-radius: 9px;
+  padding: 8px 20px;
+  background-color: transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 16px 
+}
+
+.hero-contact:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* mobile burger */
+.hero-burger {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+/* Main content */
+.hero-main {
+  margin-top: 80px;
+}
+.hero-left{
+    padding-top: 4rem;
+}
+
+.hero-left .hero-welcome {
+  font-size: 3.5rem;
+  font-weight:  490;
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-size: 5.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  margin-top: 18px;
+  max-width: 420px;
+  font-size: 1.08rem;
+  color: #e3e3e3;
+}
+
+/* Buttons */
+.hero-primary-btn {
+  background: #0b5ed7;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 10px 26px;
+  font-size: 14px;
+  border: none;
+}
+
+.hero-secondary-btn {
+  background: transparent;
+  border-radius: 999px;
+  padding: 10px 26px;
+  font-size: 14px;
+  border: 1px solid #ffffff80;
+  color: #ffffff;
+}
+
+/* Right slider card */
+.hero-right-card-wrapper {
+  margin-top: 40px;
+  margin-left: 1rem;
+  justify-content: flex-end;
+}
+
+.hero-slider-card {
+   background: radial-gradient(circle at top left, #1d1d2f, #05070c);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+
+  /* NEW: fix alignment */
+  display: flex;
+  flex-direction: column;
+  height: 450px; /* you can tweak 300–340 if needed */
+  max-width: 380px;
+}
+.hero-slider-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title inside card (heading of news/event) */
+.hero-slider-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 30px;
+
+  /* Keep card height stable even if text is long */
+  display: -webkit-box;
+        /* max 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Description text */
+.hero-slider-text {
+  font-size: 1rem;
+  color: #d7d7d7;
+  margin-top: 8px;
+
+  display: -webkit-box;       /* max 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Footer always sticks to bottom */
+.hero-slider-footer {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.hero-slider-header {
+  margin-bottom: 12px;
+}
+
+.hero-slider-title {
+  color: #ffb431;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+
+
+.hero-slider-date {
+  font-size: 13px;
+  color: #ffb431;
+  margin-top: 10px;
+}
+
+/* Inner dots (small, white) */
+.hero-inner-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.hero-inner-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #999999;
+}
+
+.hero-inner-dots .dot.active {
+  background: #ffffff;
+}
+
+/* Outer slider dots (under card) */
+.hero-outer-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  justify-content: center;
+}
+
+.hero-outer-dots .outer-dot {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: #777777;
+}
+
+.hero-outer-dots .outer-dot.active {
+  background: #ffffff;
+}
+.hero-logo-img {
+  height: 52px;      /* adjust to match your figma */
+  width: auto;
+}
+/* Fade animation for slider change */
+.fade-item {
+  animation: fadeInHero 0.5s ease;
+}
+.hero-read-btn{
+  text-decoration: none;
+  color: #ffb431;
+}
+.hero-read-btn:hover {
+  text-decoration: underline;
+  color: #ffd36b;
+}
+
+@keyframes fadeInHero {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure dots cursor is pointer */
+.hero-inner-dots .dot,
+.hero-outer-dots .outer-dot {
+  cursor: pointer;
+}
+.hero-slider-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-btn {
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #ffffff88;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.toggle-btn.active {
+  background: white;
+  color: black;
+  border-color: white;
+}
+
+.toggle-btn:hover {
+  background: #ffffffcc;
+  color: black;
+}
+
+
+
+/* ---------- Responsive (Mobile) ---------- */
+
+@media (max-width: 991.98px) {
+  .hero-wrapper {
+    height: 1000px; /* mobile height */
+    background-image: url("../assets/hero-mobile.png"); /* <-- you will replace with your mobile image */
+  }
+
+  .hero-main {
+    margin-top: 40px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+  }
+
+  .hero-left {
+    text-align: left;
+  }
+
+  .hero-slider-card {
+    margin-top: 24px;
+  }
+
+  .hero-nav {
+    display: none !important; /* hide desktop nav on mobile for now */
+  }
+  .hero-contact{
+  padding: 6px 14px;
+  font-size: 12px 
+  }
+  .hero-left .hero-welcome {
+  font-size: 1.2rem;
+  font-weight:  520;
+  margin-bottom: 10px;
+}
+.hero-slider-card {
+  margin-top: 3.5rem;
+  max-width: 340px;
+  height: 460px;
+}
+.hero-right-card-wrapper {
+  margin-top: 40px;
+  margin-left: 0rem;
+}
+
+
+}

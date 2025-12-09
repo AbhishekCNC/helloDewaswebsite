@@ -20,22 +20,92 @@ const upload = multer({ storage });
 router.get("/", async (req, res) => {
   try {
     const news = await News.find().sort({ published_at: -1 });
-    res.json(news);
+    // Normalize image paths to absolute URLs so frontends can display them reliably
+    const hostPrefix = req.protocol + "://" + req.get("host");
+    const normalized = news.map((n) => {
+      const obj = n.toObject();
+      if (obj.main_image) {
+        const p = obj.main_image.replace(/\\\\/g, "/");
+        obj.main_image = p.startsWith("http") ? p : hostPrefix + (p.startsWith("/") ? "" : "/") + p;
+      }
+      if (obj.thumbnail) {
+        const p = obj.thumbnail.replace(/\\\\/g, "/");
+        obj.thumbnail = p.startsWith("http") ? p : hostPrefix + (p.startsWith("/") ? "" : "/") + p;
+      }
+      return obj;
+    });
+    res.json(normalized);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
+// ✅ Get latest news for homepage slider
+router.get("/latest", async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 3; // default 3
+    const latestNews = await News.find()
+      .sort({ createdAt: -1 })
+      .limit(limit);
+
+    const hostPrefix = req.protocol + "://" + req.get("host");
+    const normalized = latestNews.map((n) => {
+      const obj = n.toObject();
+      if (obj.main_image) {
+        const p = obj.main_image.replace(/\\\\/g, "/");
+        obj.main_image = p.startsWith("http") ? p : hostPrefix + (p.startsWith("/") ? "" : "/") + p;
+      }
+      if (obj.thumbnail) {
+        const p = obj.thumbnail.replace(/\\\\/g, "/");
+        obj.thumbnail = p.startsWith("http") ? p : hostPrefix + (p.startsWith("/") ? "" : "/") + p;
+      }
+      return obj;
+    });
+    res.json(normalized);
+  } catch (error) {
+    console.error("Error fetching latest news:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 // ✅ GET single news
 router.get("/:id", async (req, res) => {
   try {
     const news = await News.findById(req.params.id);
     if (!news) return res.status(404).json({ message: "News not found" });
-    res.json(news);
+    const obj = news.toObject();
+    const hostPrefix = req.protocol + "://" + req.get("host");
+    if (obj.main_image) {
+      const p = obj.main_image.replace(/\\\\/g, "/");
+      obj.main_image = p.startsWith("http") ? p : hostPrefix + (p.startsWith("/") ? "" : "/") + p;
+    }
+    if (obj.thumbnail) {
+      const p = obj.thumbnail.replace(/\\\\/g, "/");
+      obj.thumbnail = p.startsWith("http") ? p : hostPrefix + (p.startsWith("/") ? "" : "/") + p;
+    }
+    res.json(obj);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
+// 👁 Increment view count
+router.put("/:id/view", async (req, res) => {
+  try {
+    const updatedNews = await News.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { view_count: 1 } },
+      { new: true }
+    );
+
+    res.json(updatedNews);
+  } catch (err) {
+    console.error("Error updating view count:", err);
+    res.status(500).json({ message: "Failed to update view count" });
+  }
+});
+
 
 // ✅ POST new news
 router.post("/", upload.fields([

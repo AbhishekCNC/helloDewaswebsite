@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config.js";
 import "./NewspaperManagement.css";
 
 export default function NewspaperManagement() {
@@ -20,12 +21,23 @@ export default function NewspaperManagement() {
     fetchPapers();
   }, []);
 
+  // Helper to build a safe absolute URL for API-served files
+  const buildUrl = (p) => {
+    if (!p) return "";
+    if (p.startsWith("http")) return p;
+    // p may start with /uploads/... or without leading slash
+    if (p.startsWith("/")) return `${API_BASE_URL}${p}`;
+    return `${API_BASE_URL}/${p}`;
+  };
+
   const fetchPapers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/newspapers");
+      console.log("📡 Fetching newspapers from:", `${API_BASE_URL}/api/newspapers`);
+      const res = await axios.get(`${API_BASE_URL}/api/newspapers`);
+      console.log("✅ Newspapers fetched successfully:", res.data);
       setPapers(res.data);
     } catch (error) {
-      console.error("Error fetching newspapers:", error);
+      console.error("❌ Error fetching newspapers:", error.response?.data || error.message);
     }
   };
 
@@ -54,22 +66,30 @@ export default function NewspaperManagement() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!file || !thumbnail) {
+        alert("❌ Please upload both file and thumbnail!");
+        return;
+      }
+
       const form = new FormData();
       form.append("title", formData.title);
       form.append("date", formData.date);
-      if (file) form.append("file", file);
-      if (thumbnail) form.append("thumbnail", thumbnail);
+      form.append("file", file);
+      form.append("thumbnail", thumbnail);
 
-      await axios.post("http://localhost:5000/api/newspapers", form, {
+      console.log("📤 Uploading newspaper to:", `${API_BASE_URL}/api/newspapers`);
+      const res = await axios.post(`${API_BASE_URL}/api/newspapers`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log("✅ Newspaper uploaded successfully:", res.data);
 
       alert("✅ Newspaper added successfully!");
       setFormVisible(false);
       resetForm();
       fetchPapers();
     } catch (error) {
-      console.error("Error adding newspaper:", error);
+      console.error("❌ Error adding newspaper:", error.response?.data || error.message);
+      alert("❌ Error adding newspaper: " + (error.response?.data?.message || error.message));
     }
   };
 
@@ -90,26 +110,32 @@ export default function NewspaperManagement() {
       if (file) form.append("file", file);
       if (thumbnail) form.append("thumbnail", thumbnail);
 
-      await axios.put(`http://localhost:5000/api/newspapers/${selectedPaper._id}`, form, {
+      console.log("📤 Updating newspaper:", selectedPaper._id);
+      const res = await axios.put(`${API_BASE_URL}/api/newspapers/${selectedPaper._id}`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log("✅ Newspaper updated successfully:", res.data);
 
       alert("✅ Newspaper updated successfully!");
       setEditMode(false);
       resetForm();
       fetchPapers();
     } catch (error) {
-      console.error("Error updating newspaper:", error);
+      console.error("❌ Error updating newspaper:", error.response?.data || error.message);
+      alert("❌ Error updating newspaper: " + (error.response?.data?.message || error.message));
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this newspaper?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/newspapers/${id}`);
+        console.log("🗑️ Deleting newspaper:", id);
+        await axios.delete(`${API_BASE_URL}/api/newspapers/${id}`);
+        console.log("✅ Newspaper deleted successfully");
         fetchPapers();
       } catch (error) {
-        console.error("Error deleting newspaper:", error);
+        console.error("❌ Error deleting newspaper:", error.response?.data || error.message);
+        alert("❌ Error deleting newspaper: " + (error.response?.data?.message || error.message));
       }
     }
   };
@@ -166,39 +192,34 @@ export default function NewspaperManagement() {
             </div>
 
             <div className="col-md-6 text-center">
-              <label className="form-label fw-semibold">Upload File (PDF / Image)</label>
+              <label className="form-label fw-semibold">Upload File (PDF / Image) *</label>
               {previewFile ? (
-                <img
-                  src={
-                    previewFile.startsWith("http")
-                      ? `http://localhost:5000/${previewFile}`
-                      : previewFile
-                  }
-                  alt="Preview"
-                  className="img-preview"
-                />
+                <img src={buildUrl(previewFile)} alt="Preview" className="img-preview" />
               ) : (
                 <p className="text-muted small">No preview</p>
               )}
-              <input type="file" className="form-control mt-2" onChange={handleFile} />
+              <input
+                type="file"
+                className="form-control mt-2"
+                onChange={handleFile}
+                required
+              />
             </div>
 
             <div className="col-md-6 text-center">
-              <label className="form-label fw-semibold">Thumbnail Image</label>
+              <label className="form-label fw-semibold">Thumbnail Image *</label>
               {previewThumb ? (
-                <img
-                  src={
-                    previewThumb.startsWith("http")
-                      ? `http://localhost:5000/${previewThumb}`
-                      : previewThumb
-                  }
-                  alt="Thumbnail"
-                  className="img-preview"
-                />
+                <img src={buildUrl(previewThumb)} alt="Thumbnail" className="img-preview" />
               ) : (
                 <p className="text-muted small">No thumbnail</p>
               )}
-              <input type="file" className="form-control mt-2" onChange={handleThumbnail} />
+              <input
+                type="file"
+                accept="image/*"
+                className="form-control mt-2"
+                onChange={handleThumbnail}
+                required
+              />
             </div>
 
             <div className="col-12 mt-3 text-end">
@@ -231,22 +252,13 @@ export default function NewspaperManagement() {
                   <td>{new Date(paper.date).toLocaleDateString()}</td>
                   <td>
                     {paper.thumbnail ? (
-                      <img
-                        src={`http://localhost:5000/${paper.thumbnail}`}
-                        alt="Thumbnail"
-                        className="thumb-small"
-                      />
+                      <img src={buildUrl(paper.thumbnail)} alt="Thumbnail" className="thumb-small" />
                     ) : (
                       "—"
                     )}
                   </td>
                   <td>
-                    <a
-                      href={`http://localhost:5000/${paper.file}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-sm btn-outline-success"
-                    >
+                    <a href={buildUrl(paper.file)} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-success">
                       View / Download
                     </a>
                   </td>

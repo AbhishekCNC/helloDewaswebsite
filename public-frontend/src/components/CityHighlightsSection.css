@@ -1,0 +1,165 @@
+.city-highlights-section {
+  padding: 50px 0;
+  background: #01123a; /* deep blue similar to your designs */
+  color: #fff;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* Heading */
+.ch-title {
+  font-size: 5.5rem;
+  font-weight: 700;
+  padding-left: px;
+}
+
+.ch-underline{
+  padding-left: 50px;
+}
+
+/* Arrows (desktop) */
+.ch-arrows .ch-arrow-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.ch-arrows .ch-arrow-btn:hover {
+  background: #fff;
+  color: #01123a;
+  border-color: #fff;
+}
+
+/* Slider layout */
+.ch-slider-wrapper {
+  position: relative;
+  overflow: hidden;
+  margin-top: 32px;
+}
+
+.ch-slider-track {
+  display: flex;
+  transition: transform 0.45s ease-in-out;
+}
+
+/* Each slide takes full width on mobile */
+.ch-slide {
+  flex: 0 0 100%;
+  padding-right: 24px;
+}
+
+/* Card styling */
+.ch-card {
+  background: radial-gradient(circle at top left, #1b2c4a, #0a1028);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 100%;
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+}
+
+.ch-image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #000;
+}
+
+.ch-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ch-card-Twitter a{
+    text-decoration: none;
+    font-size: 1.3rem;
+}
+
+/* For 450x570 feel we let height grow on desktop */
+@media (min-width: 992px) {
+  .ch-image-wrapper {
+    height: 320px;
+  }
+}
+
+.ch-card-body {
+  padding: 20px 22px 24px;
+}
+
+.ch-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.ch-card-subtitle {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px;
+}
+
+.ch-card-details {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.55;
+  color:  #ffb34d
+}
+
+/* Desktop: show 4 cards with partial gap, slider still works */
+@media (min-width: 768px) {
+  .ch-slide {
+    flex: 0 0 25%; /* 4 cards visible */
+    padding-right: 24px;
+  }
+}
+
+/* Large desktop: make cards slightly wider (3.5–4 in a row look) */
+@media (min-width: 1200px) {
+  .ch-slide {
+    flex: 0 0 25%;
+  }
+}
+
+/* Mobile arrows overlay */
+.ch-arrow-mobile {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ch-arrow-mobile-left {
+  left: 8px;
+}
+
+.ch-arrow-mobile-right {
+  right: 8px;
+}
+
+/* Hide mobile arrows on md+ */
+@media (min-width: 768px) {
+  .ch-arrow-mobile {
+    display: none;
+  }
+}

@@ -1,0 +1,35 @@
+.strip-slider-section {
+  padding: 40px 0;
+  background: #ffffff; /* or your page background */
+}
+
+/* Outer wrapper (rounded, like Figma) */
+.strip-slider-wrapper {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Image fills the wrapper */
+.strip-slider-image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .strip-slider-section {
+    padding: 0;
+  }
+
+  .strip-slider-wrapper {
+    border-radius: 0;
+  }
+
+  .strip-slider-image {
+    height: 260px; /* matches your mobile design height */
+  }
+}

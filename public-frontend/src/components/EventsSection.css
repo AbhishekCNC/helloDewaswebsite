@@ -1,0 +1,110 @@
+.events-section {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* Heading */
+.events-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.events-title-underline {
+  width: 120px;
+  height: 3px;
+  background: #ff4c2c; /* orange-red line like design */
+  margin-top: 6px;
+}
+
+/* Card */
+.event-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Top image */
+.event-card-img-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.event-card-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.event-card-img:hover {
+  transform: scale(1.03);
+}
+
+/* Body */
+.event-card-body {
+  padding: 18px 20px 20px;
+}
+
+/* Date row */
+.event-date-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #ff4c2c;
+  margin-bottom: 8px;
+}
+
+.event-date-icon {
+  color: #ff4c2c;
+}
+
+.event-date-text {
+  font-weight: 600;
+}
+
+/* Title */
+.event-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* Description (2–3 lines max) */
+.event-card-desc {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* View link */
+.event-view-link {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: #ff4c2c;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.event-view-link:hover {
+  text-decoration: underline;
+}
+
+/* Mobile tweaks */
+@media (max-width: 575.98px) {
+  .event-card-img {
+    height: 210px;
+  }
+}

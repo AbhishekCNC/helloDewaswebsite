@@ -8,15 +8,24 @@ const app = express();
 // ✅ Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173","http://localhost:5175", "http://127.0.0.1:5175","http://localhost:5174", "http://127.0.0.1:5174"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
 app.use("/uploads", express.static("uploads"));
 
 // ✅ Routes
+const authRoutes = require("./routes/auth");
 const newsRoutes = require("./routes/news");
+const eventsRoutes = require("./routes/events");
+const newspapersRoutes = require("./routes/newspapers");
+const bannersRoutes = require("./routes/banners");
+
+app.use("/api/auth", authRoutes);
 app.use("/api/news", newsRoutes);
+app.use("/api/events", eventsRoutes);
+app.use("/api/newspapers", newspapersRoutes);
+app.use("/api/banners", bannersRoutes);
 
 // ✅ Connect MongoDB
 mongoose.connect(process.env.MONGO_URI)

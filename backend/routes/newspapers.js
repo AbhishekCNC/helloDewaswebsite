@@ -5,9 +5,17 @@ const path = require("path");
 const Newspaper = require("../models/Newspaper");
 
 // ✅ Setup Storage (for PDF/Image uploads)
+const fs = require("fs");
+
+// Ensure upload directory exists. The project uses 'uploads/newspaper' (singular).
+const UPLOAD_DIR = path.join(__dirname, "..", "uploads", "newspaper");
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/newspapers/");
+    cb(null, UPLOAD_DIR);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
@@ -26,11 +34,12 @@ router.post(
   async (req, res) => {
     try {
       const { title, date } = req.body;
+      // Store DB paths as web-accessible relative paths under /uploads
       const filePath = req.files["file"]
-        ? req.files["file"][0].path.replace(/\\/g, "/")
+        ? "/uploads/newspaper/" + req.files["file"][0].filename
         : "";
       const thumbPath = req.files["thumbnail"]
-        ? req.files["thumbnail"][0].path.replace(/\\/g, "/")
+        ? "/uploads/newspaper/" + req.files["thumbnail"][0].filename
         : "";
 
       const newPaper = new Newspaper({
@@ -53,7 +62,55 @@ router.post(
 router.get("/", async (req, res) => {
   try {
     const papers = await Newspaper.find().sort({ date: -1 });
-    res.json(papers);
+    // Normalize stored paths so frontend can reliably build URLs
+    const normalized = papers.map((p) => {
+      const obj = p.toObject();
+      // Normalize file
+      if (obj.file) {
+        const f = obj.file.replace(/\\\\/g, "/");
+        if (!f.startsWith("/uploads/")) {
+          // try to extract filename and map to uploads/newspaper
+          const name = path.basename(f);
+          obj.file = "/uploads/newspaper/" + name;
+        } else {
+          obj.file = f;
+        }
+      }
+      if (obj.thumbnail) {
+        const t = obj.thumbnail.replace(/\\\\/g, "/");
+        if (!t.startsWith("/uploads/")) {
+          const name = path.basename(t);
+          obj.thumbnail = "/uploads/newspaper/" + name;
+        } else {
+          obj.thumbnail = t;
+        }
+      }
+      return obj;
+    });
+    res.json(normalized);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+// ✅ Get newspaper by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const paper = await Newspaper.findById(req.params.id);
+    if (!paper) {
+      return res.status(404).json({ message: "Newspaper not found" });
+    }
+    // Normalize paths
+    const obj = paper.toObject();
+    if (obj.file) {
+      const f = obj.file.replace(/\\\\/g, "/");
+      obj.file = f.startsWith("/uploads/") ? f : "/uploads/newspaper/" + path.basename(f);
+    }
+    if (obj.thumbnail) {
+      const t = obj.thumbnail.replace(/\\\\/g, "/");
+      obj.thumbnail = t.startsWith("/uploads/") ? t : "/uploads/newspaper/" + path.basename(t);
+    }
+    res.json(obj);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -73,10 +130,10 @@ router.put(
       const updateData = { title, date };
 
       if (req.files["file"]) {
-        updateData.file = req.files["file"][0].path.replace(/\\/g, "/");
+        updateData.file = "/uploads/newspaper/" + req.files["file"][0].filename;
       }
       if (req.files["thumbnail"]) {
-        updateData.thumbnail = req.files["thumbnail"][0].path.replace(/\\/g, "/");
+        updateData.thumbnail = "/uploads/newspaper/" + req.files["thumbnail"][0].filename;
       }
 
       const updated = await Newspaper.findByIdAndUpdate(id, updateData, {

@@ -24,14 +24,17 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      console.log("📡 Attempting login with email:", email);
+      const res = await axios.post(`http://127.0.0.1:5000/api/auth/login`, {
         email,
         password,
       });
+      console.log("✅ Login successful:", res.data);
       setSuccess(true);
       localStorage.setItem("token", res.data.token);
       setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
+      console.error("❌ Login error:", err.response?.data || err.message);
       setError(err.response?.data?.message || "Invalid credentials");
     } finally {
       setLoading(false);

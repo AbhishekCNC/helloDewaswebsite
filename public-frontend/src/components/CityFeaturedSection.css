@@ -1,0 +1,174 @@
+.city-featured-section {
+  background: #021832;
+  padding: 80px 0 60px;
+  color: #ffffff;
+}
+
+/* Heading */
+.city-featured-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+}
+
+.city-featured-underline {
+  height: 3px;
+  background: linear-gradient(to right, #f39f3b, #f39f3b);
+  width: 120px;
+  border-radius: 999px;
+}
+
+/* Cards */
+
+
+.city-featured-card {
+  background: rgba(4, 27, 59, 0.9);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 22px 22px 20px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.city-featured-logo-wrap {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.city-featured-logo {
+  max-width: 100%;
+  max-height: 344px;
+  width: 100%;
+  object-fit: contain;
+}
+
+.city-featured-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.city-featured-desc {
+  font-size: 0.9rem;
+  color: #e0e6f5;
+  margin-bottom: 10px;
+}
+
+.city-featured-details {
+  font-size: 0.8rem;
+  color: #c5cce4;
+  margin-bottom: 0;
+}
+
+/* Join hello! Dewas */
+.city-join-section {
+  margin-top: 500px;
+}
+
+.city-join-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.city-join-text {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  color: #d6def5;
+  line-height: 1.7;
+}
+
+/* Social icons */
+.city-join-socials {
+  flex-wrap: wrap;
+}
+
+.city-social-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #031d3b;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  transition: all 0.2s ease;
+}
+
+.city-social-btn:hover {
+  background: #f39f3b;
+  color: #021832;
+}
+
+/* --- MOBILE SLIDER BEHAVIOUR --- */
+
+.city-mobile-arrows {
+  display: none; /* hidden by default (desktop) */
+}
+
+@media (max-width: 767.98px) {
+  .city-featured-section {
+    padding: 50px 0 40px;
+  }
+
+  .city-featured-title {
+    font-size: 1.7rem;
+  }
+
+  .city-join-title {
+    font-size: 2rem;
+  }
+
+  .city-featured-card {
+    position: relative;
+    margin-top: 60px;
+    padding: 18px 18px 16px;
+  }
+
+  /* On mobile: show only one card (the active one) like a slider */
+  .city-featured-card-wrapper {
+    display: none;
+  }
+
+  .city-featured-card-wrapper.active-mobile {
+    display: block;
+  }
+
+  .city-featured-row {
+    position: relative;
+  }
+
+  .city-mobile-arrows {
+    
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0px;;
+  }
+
+  .city-arrow-btn {
+    width: 55px;
+    height: 65px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 2.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+  }
+
+  .city-arrow-btn:active {
+    transform: scale(0.96);
+  }
+}
