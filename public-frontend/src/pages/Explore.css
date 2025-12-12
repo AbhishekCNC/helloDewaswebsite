@@ -1,0 +1,146 @@
+/* Explore.css - copy into same folder as Explore.jsx */
+
+/* Reset little things used by page */
+.explore-page {
+  background: white;
+  color: #0b2340; /* dark-blue text similar to your theme */
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  padding: 48px 0 96px;
+}
+
+/* container to match your site */
+.explore-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.explore-header {
+  margin-bottom: 40px;
+}
+
+.explore-hero {
+  font-size: 8rem;
+  font-weight: 700;
+  color: #e6e9ec;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+/* Smaller hero for mobile */
+@media (max-width: 767px) {
+  .explore-hero {
+    font-size: 40px;
+    text-align: center;
+  }
+}
+
+.explore-sub {
+  margin-top: 14px;
+  font-weight: 700;
+  color: black;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.5rem;
+}
+.explore-sub-second {
+  font-weight: 650;
+  color: #011b3d;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 2.3rem;
+}
+.explore-sub-third {
+  color: #343434;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+/* Grid layout - 3 columns desktop, 2 tablet, 1 mobile */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  align-items: start;
+}
+
+/* Card */
+.explore-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+/* image wrapper provides border + subtle shadow and rounded corners */
+.explore-card-image-wrapper {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f1f4f7;
+  box-shadow: 0 10px 28px rgba(7,18,32,0.12);
+  border: 1px solid rgba(255,255,255,0.92); /* white thick border like your design */
+}
+
+/* Force the image aspect + cover */
+.explore-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  aspect-ratio: 487 / 447; /* keeps the visible ratio close to 497x457 */
+}
+
+/* Title under the card */
+.explore-card-title {
+  margin-top: 18px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #0b2340;
+}
+
+/* Hover / focus */
+.explore-card:hover,
+.explore-card:focus {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(7,18,32,0.12);
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 1023px) {
+  .explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+  .explore-hero { font-size: 48px; }
+}
+
+/* Mobile: 1 column stacked */
+@media (max-width: 575px) {
+  .explore-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .explore-card-title {
+    font-size: 18px;
+  }
+  .explore-sub {
+    margin-top: 2.5rem;
+    font-size: 14px;
+  }
+  .explore-sub-second {
+    font-size: 16px;
+  }
+  .explore-sub-third {
+    font-size: 13px;
+  }
+  .explore-inner { padding: 0 14px; }
+}

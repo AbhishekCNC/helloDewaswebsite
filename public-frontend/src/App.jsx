@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import NewsDetails from "./pages/NewsDetails";
 import NewspaperDetail from "./pages/NewspaperDetail";
 import EventDetails from "./pages/EventDetails";
+import Explore from "./pages/Explore";
+import NaturePage from "./pages/NaturePage";
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
       <Route path="/news/:id" element={<NewsDetails />} />
       <Route path="/newspapers/:id" element={<NewspaperDetail />} />
       <Route path="/events/:id" element={<EventDetails />} />
+      <Route path="/explore" element={<Explore />} />
+      <Route path="/nature" element={<NaturePage />} />
     
     </Routes>
   );

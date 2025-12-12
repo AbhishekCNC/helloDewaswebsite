@@ -54,7 +54,7 @@ export default function HeroSection({ latestNews, latestEvents }) {
             <a href="#" className="hero-nav-link">
               Latest News
             </a>
-            <a href="#" className="hero-nav-link">
+            <a href="./pages/Explore.jsx" className="hero-nav-link">
               Explore
             </a>
             <a href="#" className="hero-nav-link">
