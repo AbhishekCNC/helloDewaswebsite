@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "./Header";
-import Sidebar from "./Sidebar";
+import Sidebar from "./sidebar";
 
 export default function AdminLayout({ children }) {
   const [showSidebar, setShowSidebar] = useState(true);
