@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getEventById, buildImageUrl } from "../api/api";
+import Navbar from "../Navbar/Navbar";
+import Footer from "../footer/Footer";
 import "./EventDetails.css";
 
 export default function EventDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function load() {
       try {
-        const data = await getEventById(id);
-        setEvent(data);
+        setLoading(true);
+        const ev = await getEventById(id);
+        setEvent(ev);
+        setError(null);
       } catch (err) {
         console.error("Error loading event:", err);
+        setError("Unable to load event details.");
       } finally {
         setLoading(false);
       }
@@ -22,82 +29,60 @@ export default function EventDetails() {
     load();
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="container my-5">
-        <p>Loading event...</p>
-      </div>
-    );
-  }
+  if (loading) return <p className="text-center mt-5">Loading event...</p>;
+  if (error) return <p className="text-center mt-5 text-danger">{error}</p>;
+  if (!event) return <p className="text-center mt-5">Event not found.</p>;
 
-  if (!event) {
-    return (
-      <div className="container my-5">
-        <p>Event not found.</p>
-      </div>
-    );
-  }
-
-  const eventDate = event.date
-    ? new Date(event.date).toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      })
-    : "Date TBA";
+  const imgSrc = buildImageUrl(event.main_image || event.banner || event.thumbnail_image || "");
 
   return (
-    <div className="container my-5 event-detail-page">
-      <Link to="/" className="event-detail-back">
-        ← Back to home
-      </Link>
+    <>
+      <Navbar />
 
-      <div className="event-detail-hero">
-        {event.main_image || event.thumbnail_image ? (
-          <img
-            src={buildImageUrl(event.main_image || event.thumbnail_image)}
-            alt={event.title}
-          />
-        ) : null}
-      </div>
+      <div className="container event-detail-page my-4">
+        <button className="event-detail-back" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
 
-      <div className="event-detail-content">
+        {imgSrc && (
+          <div className="event-detail-hero">
+            <img src={imgSrc} alt={event.title} />
+          </div>
+        )}
+
         <h1 className="event-detail-title">{event.title}</h1>
 
         <div className="event-detail-meta">
-          <span>
-            <i className="bi bi-calendar3" /> {eventDate}
-          </span>
+          <div>
+            <i className="bi bi-calendar3" /> &nbsp;
+            {event.date ? new Date(event.date).toLocaleDateString("en-IN") : "—"}
+          </div>
           {event.location && (
-            <span>
-              <i className="bi bi-geo-alt" /> {event.location}
-            </span>
+            <div>
+              <i className="bi bi-geo-alt" /> &nbsp; {event.location}
+            </div>
+          )}
+          {event.venue && (
+            <div>
+              <i className="bi bi-building" /> &nbsp; {event.venue}
+            </div>
           )}
         </div>
 
         {event.short_description && (
-          <p className="event-detail-short">{event.short_description}</p>
+          <div className="event-detail-short">{event.short_description}</div>
         )}
 
-        {event.description && (
-          <div className="event-detail-body">
-            {event.description.split("\n").map((p, idx) => (
-              <p key={idx}>{p}</p>
-            ))}
-          </div>
-        )}
-
-        {event.link && event.link !== "undefined" && (
-          <a
-            href={event.link}
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-primary mt-3"
-          >
-            Event Link
-          </a>
-        )}
+        <div className="event-detail-body">
+          {event.description ? (
+            event.description.split("\n").map((p, idx) => <p key={idx}>{p}</p>)
+          ) : (
+            <p>No additional details provided.</p>
+          )}
+        </div>
       </div>
-    </div>
+
+      <Footer />
+    </>
   );
-}
+} 
