@@ -86,8 +86,10 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      // debug: inspect uploaded files
+// debug: inspect uploaded files when DEBUG_UPLOADS=true
+    if (process.env.DEBUG_UPLOADS === 'true') {
       console.log('[news] uploaded files:', JSON.stringify(req.files || {}));
+    }
 
       const fileUrl = (file) => {
         if (!file) return null;
