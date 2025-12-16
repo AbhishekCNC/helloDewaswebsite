@@ -65,9 +65,7 @@ export default function NewsManagement() {
       form.append("thumbnail", thumbnail);
 
       console.log("📤 Uploading news to:", `${API_BASE_URL}/api/news`);
-      const res = await axios.post(`${API_BASE_URL}/api/news`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(`${API_BASE_URL}/api/news`, form);
       console.log("✅ News uploaded successfully:", res.data);
 
       alert("✅ News posted successfully!");
@@ -113,9 +111,7 @@ export default function NewsManagement() {
       if (thumbnail) form.append("thumbnail", thumbnail);
 
       console.log("📤 Updating news:", selectedNews._id);
-      const res = await axios.put(`${API_BASE_URL}/api/news/${selectedNews._id}`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.put(`${API_BASE_URL}/api/news/${selectedNews._id}`, form);
       console.log("✅ News updated successfully:", res.data);
 
       alert("✅ News updated successfully!");

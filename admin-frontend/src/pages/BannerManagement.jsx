@@ -55,9 +55,7 @@ export default function BannerManagement() {
       form.append("categories", formData.categories);
       form.append("display", formData.display);
 
-      await axios.post(`${API_BASE_URL}/api/banners`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await axios.post(`${API_BASE_URL}/api/banners`, form);
 
       // reset form
       setFormVisible(false);
@@ -176,7 +174,7 @@ export default function BannerManagement() {
               {/* Desktop preview */}
               {b.desktop_image && (
                 <img
-                  src={`${API_BASE_URL}${b.desktop_image}`}
+                  src={b.desktop_image.startsWith("http") ? b.desktop_image : `${API_BASE_URL}${b.desktop_image}`}
                   alt="Desktop banner"
                   style={{
                     width: "100%",
@@ -190,7 +188,7 @@ export default function BannerManagement() {
               {/* Mobile preview */}
               {b.mobile_image && (
                 <img
-                  src={`${API_BASE_URL}${b.mobile_image}`}
+                  src={b.mobile_image.startsWith("http") ? b.mobile_image : `${API_BASE_URL}${b.mobile_image}`}
                   alt="Mobile banner"
                   style={{
                     width: "100%",

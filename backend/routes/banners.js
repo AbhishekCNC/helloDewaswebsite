@@ -27,16 +27,25 @@ router.post(
           .json({ message: "Both desktop_image and mobile_image are required" });
       }
 
-      // normalize paths (Windows backslashes → forward slashes, ensure leading /)
-      let desktopPath = req.files.desktop_image[0].path.replace(/\\/g, "/");
-      let mobilePath = req.files.mobile_image[0].path.replace(/\\/g, "/");
+      // helper to extract URL/path from uploaded file
+      const fileUrl = (file) => {
+        if (!file) return null;
+        return file.path || file.secure_url || file.url || file.location || (file.filename ? "/uploads/banners/" + file.filename : null);
+      };
 
-      if (desktopPath && !desktopPath.startsWith("/")) {
-        desktopPath = "/" + desktopPath;
-      }
-      if (mobilePath && !mobilePath.startsWith("/")) {
-        mobilePath = "/" + mobilePath;
-      }
+      let desktopPath = fileUrl(req.files.desktop_image[0]);
+      let mobilePath = fileUrl(req.files.mobile_image[0]);
+
+      // normalize windows backslashes (if any) and ensure leading slash for local paths
+      const normalizeAndSlash = (p) => {
+        if (!p) return p;
+        if (/^https?:\/\//i.test(p)) return p; // remote
+        const cleaned = p.replace(/\\/g, "/");
+        return cleaned.startsWith("/") ? cleaned : "/" + cleaned;
+      };
+
+      desktopPath = normalizeAndSlash(desktopPath);
+      mobilePath = normalizeAndSlash(mobilePath);
 
       const banner = new Banner({
         desktop_image: desktopPath,

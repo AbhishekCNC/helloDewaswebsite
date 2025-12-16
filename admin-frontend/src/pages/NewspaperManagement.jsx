@@ -78,9 +78,7 @@ export default function NewspaperManagement() {
       form.append("thumbnail", thumbnail);
 
       console.log("📤 Uploading newspaper to:", `${API_BASE_URL}/api/newspapers`);
-      const res = await axios.post(`${API_BASE_URL}/api/newspapers`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(`${API_BASE_URL}/api/newspapers`, form);
       console.log("✅ Newspaper uploaded successfully:", res.data);
 
       alert("✅ Newspaper added successfully!");
@@ -111,9 +109,7 @@ export default function NewspaperManagement() {
       if (thumbnail) form.append("thumbnail", thumbnail);
 
       console.log("📤 Updating newspaper:", selectedPaper._id);
-      const res = await axios.put(`${API_BASE_URL}/api/newspapers/${selectedPaper._id}`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.put(`${API_BASE_URL}/api/newspapers/${selectedPaper._id}`, form);
       console.log("✅ Newspaper updated successfully:", res.data);
 
       alert("✅ Newspaper updated successfully!");

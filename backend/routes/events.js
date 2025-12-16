@@ -22,6 +22,11 @@ function normalizePath(p) {
   return p ? p.replace(/\\/g, "/") : "";
 }
 
+function fileUrl(file) {
+  if (!file) return undefined;
+  return file.path || file.secure_url || file.url || file.location || (file.filename ? "/uploads/events/" + file.filename : undefined);
+}
+
 // ---------- CREATE EVENT ----------
 router.post(
   "/",
@@ -45,12 +50,12 @@ router.post(
 
       const mainImageFile =
         req.files?.main_image && req.files.main_image[0]
-          ? normalizePath(req.files.main_image[0].path)
+          ? normalizePath(fileUrl(req.files.main_image[0]))
           : undefined;
 
       const thumbFile =
         req.files?.thumbnail_image && req.files.thumbnail_image[0]
-          ? normalizePath(req.files.thumbnail_image[0].path)
+          ? normalizePath(fileUrl(req.files.thumbnail_image[0]))
           : undefined;
 
       const event = await Event.create({
@@ -110,11 +115,11 @@ router.put(
 
       // only overwrite images if new files are uploaded
       if (req.files?.main_image && req.files.main_image[0]) {
-        update.main_image = normalizePath(req.files.main_image[0].path);
+        update.main_image = normalizePath(fileUrl(req.files.main_image[0]));
       }
       if (req.files?.thumbnail_image && req.files.thumbnail_image[0]) {
         update.thumbnail_image = normalizePath(
-          req.files.thumbnail_image[0].path
+          fileUrl(req.files.thumbnail_image[0])
         );
       }
 

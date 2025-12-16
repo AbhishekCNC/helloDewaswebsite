@@ -116,9 +116,7 @@ export default function EventManagement() {
       if (thumbnail) form.append("thumbnail_image", thumbnail);
 
       console.log("📤 Creating event at:", `${API_BASE_URL}/api/events`);
-      const res = await axios.post(`${API_BASE_URL}/api/events`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(`${API_BASE_URL}/api/events`, form);
       console.log("✅ Event created:", res.data);
 
       alert("✅ Event added successfully!");
@@ -172,10 +170,7 @@ export default function EventManagement() {
       console.log("📤 Updating event:", selectedEvent._id);
       const res = await axios.put(
         `${API_BASE_URL}/api/events/${selectedEvent._id}`,
-        form,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        form
       );
       console.log("✅ Event updated:", res.data);
 

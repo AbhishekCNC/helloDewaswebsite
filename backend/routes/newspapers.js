@@ -24,6 +24,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// helper to extract file url (handles cloudinary or disk)
+function fileUrl(file, uploadFolderName) {
+  if (!file) return "";
+  if (file.path || file.secure_url || file.url || file.location) {
+    return file.path || file.secure_url || file.url || file.location;
+  }
+  // fallback to relative uploads path using filename
+  return `/uploads/${uploadFolderName}/${file.filename}`;
+}
+
 // ✅ Create newspaper
 router.post(
   "/",
@@ -34,12 +44,12 @@ router.post(
   async (req, res) => {
     try {
       const { title, date } = req.body;
-      // Store DB paths as web-accessible relative paths under /uploads
+      // Store DB paths as web-accessible relative paths under /uploads when needed
       const filePath = req.files["file"]
-        ? "/uploads/newspaper/" + req.files["file"][0].filename
+        ? fileUrl(req.files["file"][0], "newspaper")
         : "";
       const thumbPath = req.files["thumbnail"]
-        ? "/uploads/newspaper/" + req.files["thumbnail"][0].filename
+        ? fileUrl(req.files["thumbnail"][0], "newspaper")
         : "";
 
       const newPaper = new Newspaper({
@@ -130,10 +140,10 @@ router.put(
       const updateData = { title, date };
 
       if (req.files["file"]) {
-        updateData.file = "/uploads/newspaper/" + req.files["file"][0].filename;
+        updateData.file = fileUrl(req.files["file"][0], "newspaper");
       }
       if (req.files["thumbnail"]) {
-        updateData.thumbnail = "/uploads/newspaper/" + req.files["thumbnail"][0].filename;
+        updateData.thumbnail = fileUrl(req.files["thumbnail"][0], "newspaper");
       }
 
       const updated = await Newspaper.findByIdAndUpdate(id, updateData, {
