@@ -14,6 +14,14 @@ export default function HeroSection({ latestNews, latestEvents }) {
   const activeItem =
     activeList && activeList.length > 0 ? activeList[currentIndex] : null;
 
+  // helper: truncate text by words and append ellipsis when truncated
+  const truncateWords = (text, limit) => {
+    if (!text) return "";
+    const words = String(text).split(/\s+/).filter(Boolean);
+    if (words.length <= limit) return words.join(" ");
+    return words.slice(0, limit).join(" ") + "...";
+  };
+
   // auto-slide every 2 seconds
   useEffect(() => {
     if (!activeList || activeList.length === 0) return;
@@ -135,9 +143,9 @@ export default function HeroSection({ latestNews, latestEvents }) {
                 <div className="hero-slider-body fade-item">
                   {activeItem ? (
                     <>
-                      <p className="hero-slider-label">{activeItem.title}</p>
+                      <p className="hero-slider-label">{truncateWords(activeItem.title, 13)}</p>
                       <p className="hero-slider-text">
-                        {activeItem.short_description}
+                        {truncateWords(activeItem.short_description, 23)}
                         <Link
                           to={`/news/${activeItem._id}`}
                           className="hero-read-btn"
