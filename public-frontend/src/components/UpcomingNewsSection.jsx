@@ -41,6 +41,14 @@ export default function UpcomingNewsSection() {
     load();
   }, []);
 
+  // helper: truncate a text by words and append ellipsis if truncated
+  const truncateWords = (text, limit) => {
+    if (!text) return "";
+    const words = String(text).split(/\s+/).filter(Boolean);
+    if (words.length <= limit) return words.join(" ");
+    return words.slice(0, limit).join(" ") + "...";
+  };
+
   if (loading) {
     return (
       <section className="upcoming-news-section container my-5">
@@ -75,7 +83,7 @@ export default function UpcomingNewsSection() {
   };
 
   return (
-    <section className="upcoming-news-section container my-5">
+    <section className="upcoming-news-section container ">
       {/* Title row */}
       <div className="d-flex align-items-center mb-4">
         <h2 className="fw-bold mb-0">Upcoming Events</h2>
@@ -84,7 +92,7 @@ export default function UpcomingNewsSection() {
 
       <div className="row g-4">
         {/* LEFT: BIG CARD */}
-        <div className="col-lg-4">
+        <div className="col-lg-5">
           <div
             className="up-main-card"
             onClick={() => mainNews && openNews(mainNews._id)}
@@ -93,7 +101,7 @@ export default function UpcomingNewsSection() {
               backgroundImage: `url(${buildImageUrl((mainNews && (mainNews.main_image || mainNews.thumbnail_image)) || "")})`,
             }}
           >
-            <div className="up-main-overlay">
+            {/* <div className="up-main-overlay">
               <div className="up-main-date">
                 {new Date(mainNews.published_at).toLocaleDateString("en-IN", {
                   day: "2-digit",
@@ -103,12 +111,12 @@ export default function UpcomingNewsSection() {
               </div>
               <h3 className="up-main-title">{mainNews.title}</h3>
               <p className="up-main-readmore">Read More</p>
-            </div>
+            </div> */}
           </div>
         </div>
 
         {/* CENTER: 4 SMALL NEWS ITEMS */}
-        <div className="col-lg-5">
+        <div className="col-lg-4">
           <div className="up-list-wrapper">
             {sideNews.map((item) => (
               <div
@@ -134,7 +142,7 @@ export default function UpcomingNewsSection() {
                     })}
                   </div>
                   <h4 className="up-list-title">{item.title}</h4>
-                  <p className="up-list-desc">{item.short_description}</p>
+                  <p className="up-list-desc">{truncateWords(item.short_description, 25)}</p>
                 </div>
               </div>
             ))}
@@ -164,16 +172,6 @@ export default function UpcomingNewsSection() {
             <button className="btn btn-dark w-100">2.9 lac</button>
           </div>
           <div className="up-static-banner">
-            {/* You will replace this with your static image later */}
-            <p className="mb-1 fw-semibold">
-              Best local news & updates platform hello dewas
-            </p>
-            <p className="small mb-3">
-              Stay informed with the latest happenings in your city.
-            </p>
-            <button className="btn btn-outline-light btn-sm">
-              Read Now
-            </button>
           </div>
         </div>
       </div>
