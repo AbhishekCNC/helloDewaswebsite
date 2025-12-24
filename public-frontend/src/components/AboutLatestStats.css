@@ -1,0 +1,118 @@
+.latest-section {
+  width: 100%;
+  background: linear-gradient(180deg, #041c3a 0%, #02162e 100%);
+  padding: 80px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.latest-wrapper {
+  width: 80%;
+  display: flex;
+  gap: 2rem;
+}
+
+/* ================= LEFT MAIN CARD ================= */
+
+.latest-main-card {
+  position: relative;
+  width: 680px;
+  height: 640px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.latest-main-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* GLASS OVERLAY */
+.latest-main-overlay {
+  position: absolute;
+  inset: 0;
+  /* background: rgba(0, 0, 0, 0.45); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  color: #ffffff;
+}
+
+.latest-main-overlay h2 {
+  font-size: 2px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.latest-main-overlay p {
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin-bottom: 18px;
+}
+
+.latest-main-overlay button {
+  width: fit-content;
+  background: #e53935;
+  border: none;
+  color: #fff;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ================= RIGHT STATS ================= */
+
+.latest-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* GLASS CARD */
+.stat-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  padding: 18px 20px;
+  color: #ffffff;
+}
+
+.stat-card h3 {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: px;
+}
+
+.stat-card p {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* HIGHLIGHT */
+.stat-card.highlight h3 {
+  color: #ffb300;
+}
+
+/* ================= MOBILE EXACT ================= */
+
+@media (max-width: 768px) {
+  .latest-wrapper {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .latest-main-card {
+    width: 100%;
+    height: 360px;
+  }
+
+  .latest-stats {
+    gap: 10px;
+  }
+}

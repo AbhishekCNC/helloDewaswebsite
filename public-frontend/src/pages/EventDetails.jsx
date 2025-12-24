@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getEventById, buildImageUrl } from "../api/api";
-import Navbar from "../Navbar/Navbar";
-import Footer from "../footer/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "./EventDetails.css";
 
 export default function EventDetails() {

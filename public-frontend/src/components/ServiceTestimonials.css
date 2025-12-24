@@ -1,0 +1,134 @@
+.testimonial-section {
+  position: relative;
+  background: url("../assets/hero-desktop.png") center/cover no-repeat;
+  padding: 120px 80px;
+  color: #fff;
+}
+
+/* DARK OVERLAY */
+.testimonial-overlay {
+  position: absolute;
+  inset: 0;
+  /* background: rgba(0, 0, 0, 0.55); */
+}
+
+/* CONTENT */
+.testimonial-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+/* LEFT */
+.testimonial-left {
+  flex: 1;
+}
+
+.testimonial-small {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.testimonial-left h2 {
+  font-size: 48px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* SLIDER */
+.testimonial-slider {
+  flex: 2;
+  display: flex;
+  gap: 30px;
+  position: relative;
+}
+
+/* CARD */
+.testimonial-card {
+  width: 380px;
+  padding: 30px;
+  border-radius: 18px;
+  background: rgba(20, 30, 40, 0.55);
+  backdrop-filter: blur(14px);
+  position: relative;
+}
+
+/* QUOTES */
+.quote-top {
+  font-size: 48px;
+  opacity: 0.4;
+}
+
+.quote-bottom {
+  font-size: 48px;
+  opacity: 0.4;
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+}
+
+/* PROFILE */
+.testimonial-profile img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin: 14px 0;
+}
+
+/* TEXT */
+.testimonial-card h3 {
+  font-size: 18px;
+  color: #ffb400;
+}
+
+.testimonial-role {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+
+.testimonial-text {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* NEXT BUTTON */
+.testimonial-next {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* ================= MOBILE EXACT ================= */
+
+@media (max-width: 768px) {
+  .testimonial-section {
+    padding: 80px 20px;
+  }
+
+  .testimonial-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .testimonial-left h2 {
+    font-size: 32px;
+  }
+
+  .testimonial-slider {
+    width: 100%;
+  }
+
+  .testimonial-card {
+    width: 100%;
+  }
+}

@@ -30,7 +30,7 @@ export default function NewspaperPdfSection() {
   };
 
   return (
-    <section className="np-section container my-5">
+    <section className="np-section container ">
       {/* Section heading */}
       <div className="text-center mb-4">
         <h2 className="np-title">Hello Dewas Publication</h2>

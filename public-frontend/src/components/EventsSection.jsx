@@ -43,9 +43,11 @@ export default function EventsSection() {
   if (!events.length) {
     return (
       <section className="events-section container my-5">
-        <h2 className="events-title">Events &amp; Happenings</h2>
-        <div className="events-title-underline" />
+        <div className="d-flex align-items-center mb-4 ">
+          <h2 className="events-title">Events &amp; Happenings</h2>
+        <div className="flex-grow-1 ms-3 events-title-underline" />
         <p className="mt-3">No events found.</p>
+        </div>
       </section>
     );
   }

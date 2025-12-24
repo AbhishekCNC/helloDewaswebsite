@@ -50,7 +50,7 @@
 .mn-side-thumb-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .mn-side-meta {
@@ -145,6 +145,9 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
 }
+.mna-grid-wrapper {
+  display: none;
+}
 
 .mn-grid-card {
   background: #ffffff;
@@ -163,7 +166,7 @@
 }
 
 .mn-grid-image-wrapper {
-  height: 150px;
+  height: 210px;
   overflow: hidden;
 }
 
@@ -266,6 +269,9 @@
 /* --- RESPONSIVE ---------------------------------------------------- */
 
 @media (max-width: 991.98px) {
+  .mn-side-column{
+    display: none;
+  }
   .mn-top-row {
     flex-direction: column;
   }
@@ -281,10 +287,14 @@
   }
 
   .mn-main-image-wrapper {
-    height: 220px;
+    height: 400px;
   }
 
   .mn-grid-wrapper {
+    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mna-grid-wrapper {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -299,8 +309,73 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
+  .mna-grid-wrapper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
 
   .mn-banner-slider {
-    min-height: 130px;
+    min-width: 400px;
+    min-height: 150px;
   }
+  .mn-grid-image-wrapper{
+    height: 160px;
+  }
+}
+
+.for-square{
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .mna-grid-wrapper{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    display: grid;
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .mna-grid-card {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.mna-grid-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+}
+
+.mna-grid-image-wrapper {
+  height: 210px;
+  overflow: hidden;
+}
+
+.mna-grid-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mna-grid-body {
+  padding: 12px 16px 16px;
+}
+
+.mna-grid-title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.mna-grid-desc {
+  font-size: 0.85rem;
+  color: #555;
+}
 }

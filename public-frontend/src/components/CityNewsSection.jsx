@@ -8,6 +8,13 @@ export default function CityNewsSection() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // limit description to 25 words and append "..." when truncated
+  const clampWords = (text, max = 25) => {
+    if (!text) return "";
+    const words = String(text).split(/\s+/).filter(Boolean);
+    return words.length > max ? words.slice(0, max).join(" ") + "..." : text;
+  };
+
   useEffect(() => {
     async function load() {
       try {
@@ -115,9 +122,9 @@ export default function CityNewsSection() {
                 {/* Title */}
                 <h5 className="event-card-title">{item.title}</h5>
 
-                {/* Short description – clamped by CSS */}
+                {/* Short description – clamped to 25 words */}
                 <p className="event-card-desc">
-                  {item.short_description || item.description || ""}
+                  {clampWords(item.short_description || item.description || "")}
                 </p>
 
                 {/* View button */}

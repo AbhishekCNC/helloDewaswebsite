@@ -132,6 +132,7 @@ export default function MoreNewsSection() {
   const leftSmall = news.slice(1, 3);
   const rightSmall = news.slice(3, 5);
   const rest = news.slice(5);        // medium grid cards
+  const small = news.slice(1);
 
   return (
     <section className="more-news-section container my-5">
@@ -221,7 +222,8 @@ export default function MoreNewsSection() {
           </div>
         </div>
 
-        <div className="mn-side-column">
+        
+          <div className="mn-side-column">
           {rightSmall.map((item) => (
             <div
               key={item._id}
@@ -260,6 +262,7 @@ export default function MoreNewsSection() {
             </div>
           ))}
         </div>
+
       </div>
 
       {/* BELOW: medium cards grid + banner slider row in between */}
@@ -299,6 +302,55 @@ export default function MoreNewsSection() {
                 </div>
                 <h4 className="mn-grid-title">{item.title}</h4>
                 <p className="mn-grid-desc">
+                  {(item.short_description || item.description || "")
+                    .slice(0, 120)
+                    .trim()}
+                  {(item.short_description || item.description || "").length >
+                    120 && "…"}
+                </p>
+              </div>
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* for mobile view */}
+       <div className="mna-grid-wrapper">
+        {small.map((item, idx) => (
+          <React.Fragment key={item._id}>
+            {/* insert banner row AFTER the first row of 4 cards */}
+            {idx === 4 && banners && banners.length > 0 && (
+              <div className="mna-banner-row">
+                <BannerSlider banners={banners.slice(0, 3)} />
+              </div>
+            )}
+
+            <div
+              className="mna-grid-card"
+              onClick={() => openNews(item._id)}
+            >
+              <div className="mna-grid-image-wrapper">
+                {item.main_image || item.thumbnail_image ? (
+                  <img
+                    src={buildImageUrl(
+                      item.main_image || item.thumbnail_image
+                    )}
+                    alt={item.title}
+                  />
+                ) : null}
+              </div>
+              <div className="mna-grid-body">
+                <div className="mna-date">
+                  {new Date(
+                    item.published_at || item.createdAt
+                  ).toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </div>
+                <h4 className="mna-grid-title">{item.title}</h4>
+                <p className="mna-grid-desc">
                   {(item.short_description || item.description || "")
                     .slice(0, 120)
                     .trim()}

@@ -66,6 +66,26 @@ export default function CityFeaturedSection() {
           <div className="city-featured-underline ms-3" />
         </div>
 
+        <div className="city-mobile-arrows d-md-none">
+          <button
+            type="button"
+            className="city-arrow-btn"
+            onClick={prevSlide}
+            aria-label="Previous"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            className="city-arrow-btn"
+            onClick={nextSlide}
+            aria-label="Next"
+          >
+            ›
+          </button>
+        </div>
+
+
         {/* Cards */}
         <div className="row g-4 city-featured-row">
           {featuredPlaces.map((place, index) => (
@@ -109,7 +129,7 @@ export default function CityFeaturedSection() {
             onClick={prevSlide}
             aria-label="Previous"
           >
-            ‹
+            
           </button>
           <button
             type="button"
@@ -117,7 +137,7 @@ export default function CityFeaturedSection() {
             onClick={nextSlide}
             aria-label="Next"
           >
-            ›
+            
           </button>
         </div>
 

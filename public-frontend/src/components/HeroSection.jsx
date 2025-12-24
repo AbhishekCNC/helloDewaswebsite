@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./HeroSection.css";
 import { Link } from "react-router-dom";
+import logo from "../assets/hello-dewas-logo.png";
 
 export default function HeroSection({ latestNews, latestEvents }) {
   // 'news' or 'events'
@@ -45,7 +46,7 @@ export default function HeroSection({ latestNews, latestEvents }) {
           <div className="hero-logo">
             {/* TEMP text, you will replace with <img /> */}
             <img
-              src="../assests/hello-dewas-logo.png" // <-- use your exact file name
+              src={logo}
               alt="hello! Dewas"
               className="hero-logo-img"
             />
@@ -53,25 +54,25 @@ export default function HeroSection({ latestNews, latestEvents }) {
 
           {/* Center: Nav links (desktop only for now) */}
           <nav className="hero-nav d-none d-lg-flex gap-4">
-            <a href="#" className="hero-nav-link">
+            <a href="/" className="hero-nav-link">
               Home
             </a>
-            <a href="#" className="hero-nav-link">
+            <a href="/about" className="hero-nav-link">
               About Dewas
             </a>
-            <a href="#" className="hero-nav-link">
+            <a href="/latest-news" className="hero-nav-link">
               Latest News
             </a>
-            <a href="./pages/Explore.jsx" className="hero-nav-link">
+            <a href="/explore" className="hero-nav-link">
               Explore
             </a>
-            <a href="#" className="hero-nav-link">
+            <a href="/events" className="hero-nav-link">
               Events
             </a>
-            <a href="#" className="hero-nav-link">
+            <a href="/stories" className="hero-nav-link">
               Stories
             </a>
-            <a href="#" className="hero-nav-link">
+            <a href="/services" className="hero-nav-link">
               Our Services
             </a>
           </nav>
@@ -92,7 +93,7 @@ export default function HeroSection({ latestNews, latestEvents }) {
         <div className="container hero-main">
           <div className="row align-items-center">
             {/* Left side text */}
-            <div className="col-lg-6 hero-left">
+            <div className="col-lg-7 hero-left">
               <p className="hero-welcome">Welcome to</p>
               <h1 className="hero-title">hello! DEWAS</h1>
               <p className="hero-subtitle">
@@ -106,7 +107,7 @@ export default function HeroSection({ latestNews, latestEvents }) {
             </div>
 
             {/* Right side slider card placeholder */}
-            <div className="col-lg-5 offset-lg-1 hero-right-card-wrapper">
+            <div className="col-lg-4 offset-lg-1 hero-right-card-wrapper">
               <div className="hero-slider-card">
                 <div className="hero-slider-header d-flex justify-content-between align-items-center">
                   <span className="hero-slider-title">

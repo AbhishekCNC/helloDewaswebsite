@@ -1,0 +1,85 @@
+/* ================= HERO ================= */
+
+.services-hero {
+  background: linear-gradient(180deg, #041c3a 0%, #02162e 100%);
+  padding: 100px 20px 40px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.services-hero h1 {
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.services-hero p {
+  max-width: 820px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.9;
+}
+
+.services-divider {
+  display: inline-block;
+  width: 24px;
+  height: 3px;
+  background: #ff3d7f;
+  margin-top: 24px;
+}
+
+/* ================= GRID ================= */
+
+.services-grid-section {
+  background: #02162e;
+  padding: 60px 0 100px;
+}
+
+.services-grid {
+  max-width: 1400px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  padding: 0 20px;
+}
+
+/* CARD */
+.service-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 28px;
+  color: #ffffff;
+}
+
+.service-card i {
+  font-size: 34px;
+  margin-bottom: 16px;
+  display: inline-block;
+}
+
+.service-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  font-size: 13px;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+/* ================= MOBILE EXACT ================= */
+
+@media (max-width: 768px) {
+  .services-hero h1 {
+    font-size: 26px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

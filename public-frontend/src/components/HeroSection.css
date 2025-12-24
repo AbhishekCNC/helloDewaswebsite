@@ -2,7 +2,7 @@
 .hero-wrapper {
   position: relative;
   width: 100%;
-  height: 90vh; /* desktop height */
+  height: 99vh; /* desktop height */
   background-image: url("../assets/hero-desktop.png"); /* <-- you will replace with your image name */
   background-size: cover;
   background-position: center;
@@ -80,7 +80,7 @@
   margin-top: 80px;
 }
 .hero-left{
-    padding-top: 4rem;
+    padding-top: 0rem;
 }
 
 .hero-left .hero-welcome {
@@ -234,7 +234,7 @@
   background: #ffffff;
 }
 .hero-logo-img {
-  height: 52px;      /* adjust to match your figma */
+  height: 8rem;      /* adjust to match your figma */
   width: auto;
 }
 /* Fade animation for slider change */
@@ -299,7 +299,7 @@
 
 @media (max-width: 991.98px) {
   .hero-wrapper {
-    height: 1000px; /* mobile height */
+    height: 1020px; /* mobile height */
     background-image: url("../assets/hero-mobile.png"); /* <-- you will replace with your mobile image */
   }
 

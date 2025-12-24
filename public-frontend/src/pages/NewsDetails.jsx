@@ -1,95 +1,125 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getNewsById, incrementNewsView } from "../api/api";
-import { getAllNews, buildImageUrl } from "../api/api";
-import { set } from "mongoose";
-
-
+import { useParams, Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import DiscoverBanner from "../components/DiscoverBanner";
+import Footer from "../footer/Footer";
+import { getNewsById, getLatestNews, buildImageUrl } from "../api/api";
+import "./NewsDetail.css";
 
 export default function NewsDetails() {
-  
   const { id } = useParams();
   const [news, setNews] = useState(null);
+  const [related, setRelated] = useState([]);
+  const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const fetchNews = async () => {
-    try {
-      const data = await getNewsById(id);
-       const data4 = await getAllNews();
-      setNews(data);
-      setSideNews(data4);
-
-      // 👉 Update view count
-      await incrementNewsView(id);
-      
-    } catch (err) {
-      console.error("❌ Failed to load news:", err);
-      setError("Unable to load this news article.");
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const n = await getNewsById(id);
+        const latest = await getLatestNews(10);
+        setNews(n);
+        setRelated(latest.filter((i) => i._id !== id));
+      } catch (err) {
+        console.error("Failed to load news", err);
+      } finally {
+        setLoading(false);
+      }
     }
-  };
+    loadData();
+  }, [id]);
 
-  fetchNews();
-}, [id]);
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="news-loading">Loading...</div>
+      </>
+    );
+  }
 
-
-  if (!news) return <p className="text-center mt-5">Loading...</p>;
+  if (!news) {
+    return (
+      <>
+        <Navbar />
+        <div className="news-loading">News not found</div>
+      </>
+    );
+  }
 
   return (
-    <div className="row">
-      <div className="col-8 ms-5">
-        <div className="container py-4">
-      <h1 className="fw-bold fs-2">{news.title}</h1>
+    <>
+      <Navbar />
 
-      <p className="text-muted">
-        📅 {new Date(news.published_at).toLocaleDateString("en-IN")}
-        {/* &nbsp;&nbsp; 👁 {news.view_count} */}
-      </p>
-<img
-  src={news ? buildImageUrl(news.main_image || news.thumbnail_image) : ""}
-  alt={news?.title || "News image"}
-  className="news-detail-main-img"
-/>
+      <section className="news-detail-wrapper">
+        <div className="news-detail-container">
+          {/* LEFT CONTENT */}
+          <div className="news-main">
+            <Link to="/" className="news-back">← Back</Link>
 
+            <h1 className="news-title">{news.title}</h1>
 
-      <p className="fs-5">{news.description}</p>
-    </div>
-      </div>
-      
-        <div className="col-lg-5">
-                  <div className="up-list-wrapper">
-                    {sideNews.map((item) => (
-                      <div
-                        key={item._id}
-                        className="up-list-item"
-                        onClick={() => openNews(item._id)}
-                      >
-                        <div className="up-list-thumb">
-                          <img
-                            src={buildImageUrl(
-                              (item && (item.thumbnail_image || item.thumbnail || item.main_image)) || ""
-                            )}
-                            alt={item.title}
-                            onError={(e) => { e.target.style.display = 'none'; }}
-                          />
-                        </div>
-                        <div className="up-list-text">
-                          <div className="up-list-date">
-                            {new Date(item.published_at).toLocaleDateString("en-IN", {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </div>
-                          <h4 className="up-list-title">{item.title}</h4>
-                          <p className="up-list-desc">{item.short_description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+            <div className="news-meta">
+              <span>Author: Priya Mehta</span>
+              <span>{new Date(news.createdAt).toLocaleDateString()}</span>
+              <span>{news.categories}</span>
+            </div>
+
+            <div className="news-share">
+              <span>Share To</span>
+              <div className="share-icons">
+                <i className="bi bi-whatsapp" />
+                <i className="bi bi-twitter" />
+                <i className="bi bi-facebook" />
+                <i className="bi bi-instagram" />
+              </div>
+            </div>
+
+            {news.main_image && (
+              <img
+                src={buildImageUrl(news.main_image)}
+                alt={news.title}
+                className="news-hero-image"
+              />
+            )}
+
+            <div className="news-content">
+              <h3>Dewas, India —</h3>
+              {(news.description || "").split("\n").map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
+
+            <div className="news-tags">
+              #HelloDewas #GreenDewas #CityStories
+            </div>
+
+            <button className="load-more-btn">Load More</button>
+          </div>
+
+          {/* RIGHT SIDEBAR */}
+          <aside className="news-sidebar">
+            <h3>Related Blogs</h3>
+            {related.map((item) => (
+              <Link
+                key={item._id}
+                to={`/news/${item._id}`}
+                className="related-card"
+              >
+                <img src={buildImageUrl(item.thumbnail || item.main_image)} alt={item.title} />
+                <div>
+                  <h4>{item.title}</h4>
+                  <p>Local residents turned an empty plot into a green garden.</p>
                 </div>
-    </div>
-    
+              </Link>
+            ))}
+          </aside>
+        </div>
+      </section>
+
+      {/* REUSABLE BOTTOM COMPONENT */}
+      <DiscoverBanner />
+
+      <Footer />
+    </>
   );
 }

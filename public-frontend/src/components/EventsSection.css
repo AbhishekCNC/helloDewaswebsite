@@ -11,10 +11,8 @@
 }
 
 .events-title-underline {
-  width: 120px;
-  height: 3px;
-  background: #ff4c2c; /* orange-red line like design */
-  margin-top: 6px;
+    height: 2px;
+  background: #e55a3c;
 }
 
 /* Card */

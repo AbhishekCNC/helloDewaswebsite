@@ -1,0 +1,23 @@
+.about-hero-desc {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.9;
+  opacity: 0.9;
+  color: white;
+  max-width: 800px;
+  text-align: center;
+}
+.about-para-section{
+  width: 100%;
+  background: linear-gradient(180deg, #02162e 0%, #02162e 100%);
+  display: flex;
+  justify-content: center;
+
+}
+@media (max-width: 768px) {
+  .about-hero-desc {
+    font-size: 12px;
+    line-height: 1.7;
+    padding: 0 20px;
+  }
+}

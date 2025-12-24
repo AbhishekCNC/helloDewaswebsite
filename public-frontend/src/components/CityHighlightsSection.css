@@ -53,7 +53,7 @@
 /* Each slide takes full width on mobile */
 .ch-slide {
   flex: 0 0 100%;
-  padding-right: 24px;
+  padding-right: 14px;
 }
 
 /* Card styling */
@@ -119,6 +119,7 @@
 
 /* Desktop: show 4 cards with partial gap, slider still works */
 @media (min-width: 768px) {
+
   .ch-slide {
     flex: 0 0 25%; /* 4 cards visible */
     padding-right: 24px;
@@ -162,4 +163,16 @@
   .ch-arrow-mobile {
     display: none;
   }
+}
+@media (max-width: 786px){
+   .ch-title{
+    font-size: 2.5rem;
+  }
+  .ch-underline{
+    padding-left: 1px;
+  }
+  .ch-image-wrapper {
+    height: 330px;
+  }
+  
 }

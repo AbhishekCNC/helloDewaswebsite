@@ -1,0 +1,136 @@
+/* ================= HERO ================= */
+
+.nature-hero {
+  position: relative;
+  background: linear-gradient(180deg, #4c738f 0%, #6b8fa8 100%);
+  padding: 140px 20px 80px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.nature-bg-text {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 250px;
+  font-weight: 750;
+  opacity: 0.12;
+}
+
+.nature-hero-content h2 {
+    padding-top: 19rem;
+  font-size: 28px;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.nature-hero-content p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* ================= LIST ================= */
+
+.nature-list {
+  background: linear-gradient(180deg, #6b8fa8 0%, #0b1034 100%);
+  padding: 80px 0;
+}
+
+/* ITEM */
+.nature-item {
+  max-width: 1200px;
+  margin: 0 auto 120px;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 0 20px;
+}
+
+.nature-item.right {
+  flex-direction: row;
+}
+
+.nature-item.left {
+  flex-direction: row-reverse;
+}
+
+/* TEXT */
+.nature-text {
+  flex: 1;
+  color: #ffffff;
+}
+
+.nature-index {
+  font-size: 100px;
+  opacity: 0.15;
+  font-weight: 700;
+}
+
+.nature-text h3 {
+  font-size: 52px;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.nature-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.nature-text a {
+  font-size: 16px;
+  color: #ffcc66;
+  text-decoration: none;
+}
+
+/* IMAGE */
+.nature-image {
+  flex: 1;
+}
+
+.nature-image img {
+  width: 100%;
+  max-width: 505px; /* exact image width */
+  height: auto;
+  border-radius: 18px;
+}
+
+/* ================= MOBILE EXACT ================= */
+
+@media (max-width: 768px) {
+  .nature-bg-text {
+    font-size: 100px;
+    top: 60px;
+  }
+
+  .nature-item {
+    flex-direction: column !important;
+    gap: 30px;
+    margin-bottom: 80px;
+  }
+
+  .nature-index {
+    font-size: 100px;
+  }
+  .nature-hero-content h2 {
+    padding-top: 6rem;
+}
+.nature-list {
+  
+  padding: 20px 0;
+}
+.nature-text h3 {
+  font-size: 35px;
+  font-weight: 700;
+  margin: 10px 0;
+}
+.nature-text p {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+}

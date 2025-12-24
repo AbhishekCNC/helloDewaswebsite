@@ -13,7 +13,7 @@
 .city-featured-underline {
   height: 3px;
   background: linear-gradient(to right, #f39f3b, #f39f3b);
-  width: 120px;
+  width: 920px;
   border-radius: 999px;
 }
 
@@ -116,12 +116,15 @@
 }
 
 @media (max-width: 767.98px) {
+  .city-featured-underline{
+    display: none;
+  }
   .city-featured-section {
     padding: 50px 0 40px;
   }
 
   .city-featured-title {
-    font-size: 1.7rem;
+    font-size: 2rem;
   }
 
   .city-join-title {
@@ -148,10 +151,18 @@
   }
 
   .city-mobile-arrows {
-    
+    /* fill card vertically and center arrows using flexbox */
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin-top: 0px;;
+    padding: 0 8px;
+    z-index: 1000; /* place above card */
+    pointer-events: none; /* allow only inner buttons to receive clicks */
   }
 
   .city-arrow-btn {
@@ -159,13 +170,15 @@
     height: 65px;
     border-radius: 50%;
     border: none;
-    background: rgba(255, 255, 255, 0.12);
+    background: transparent;
     color: #ffffff;
-    font-size: 2.9rem;
+    font-size: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(6px);
+    z-index: 1001; /* above the arrows container */
+    pointer-events: auto; /* buttons should be clickable */
   }
 
   .city-arrow-btn:active {
