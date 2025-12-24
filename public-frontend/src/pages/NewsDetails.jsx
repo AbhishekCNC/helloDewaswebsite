@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import DiscoverBanner from "../components/DiscoverBanner";
-import Footer from "../footer/Footer";
+import Footer from "../components/Footer";
 import { getNewsById, getLatestNews, buildImageUrl } from "../api/api";
 import "./NewsDetail.css";
 
@@ -117,7 +116,7 @@ export default function NewsDetails() {
       </section>
 
       {/* REUSABLE BOTTOM COMPONENT */}
-      <DiscoverBanner />
+    
 
       <Footer />
     </>
