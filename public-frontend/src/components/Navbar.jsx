@@ -19,27 +19,27 @@ const Navbar = () => {
           <li><a href="/">Home</a></li>
 
           <li>
-            <a href="/about">About Dewas <span>⌄</span></a>
+            <a href="/about">About Dewas </a>
           </li>
 
           <li>
-            <a href="/latest-news">Latest News <span>⌄</span></a>
+            <a href="/latest-news">Latest News </a>
           </li>
 
           <li>
-            <a href="/explore">Explore <span>⌄</span></a>
+            <a href="/explore">Explore </a>
           </li>
 
           <li>
-            <a href="/events">Events <span>⌄</span></a>
+            <a href="/events">Events </a>
           </li>
 
           <li>
-            <a href="/stories">Stories <span>⌄</span></a>
+            <a href="/stories">Stories </a>
           </li>
 
           <li>
-            <a href="/services">Our Services <span>⌄</span></a>
+            <a href="/services">Our Services</a>
           </li>
         </ul>
 

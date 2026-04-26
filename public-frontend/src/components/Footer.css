@@ -29,6 +29,11 @@
   font-weight: 500;
 }
 
+.footer-col a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
 .footer-desc {
   line-height: 1.7;
   font-size: 0.929rem;

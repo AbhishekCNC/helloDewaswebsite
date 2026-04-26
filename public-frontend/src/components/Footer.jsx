@@ -27,10 +27,10 @@ const Footer = () => {
         <div className="footer-col">
           <h4>Quick Links</h4>
           <ul>
-            <li>About Dewas</li>
-            <li>Sight Seeing</li>
-            <li>Events</li>
-            <li>Stories</li>
+            <a href="\about"><li>About Dewas</li></a>
+            <a href="\explore"><li>Sight Seeing</li></a>
+            <a href="\events"><li>Events</li></a>
+            <a href="\stories"><li>Stories</li></a>
           </ul>
         </div>
 
