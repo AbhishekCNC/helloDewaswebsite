@@ -7,6 +7,7 @@ export default function HeroSection({ latestNews, latestEvents }) {
   // 'news' or 'events'
   const [activeType, setActiveType] = useState("news");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // decide which list is active
   const activeList =
@@ -85,9 +86,39 @@ export default function HeroSection({ latestNews, latestEvents }) {
             <button className="hero-contact">Contact With Us</button>
 
             {/* Mobile burger icon (only visible on small screens) */}
-            <button className="hero-burger d-lg-none">☰</button>
+            <button 
+              className="hero-burger d-lg-none"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              ☰
+            </button>
           </div>
         </header>
+
+        {/* Mobile Navigation Menu */}
+        <nav className={`hero-nav-mobile d-lg-none ${isMenuOpen ? "active" : ""}`}>
+          <a href="/" className="hero-nav-link" onClick={() => setIsMenuOpen(false)}>
+            Home
+          </a>
+          <a href="/about" className="hero-nav-link" onClick={() => setIsMenuOpen(false)}>
+            About Dewas
+          </a>
+          <a href="/latest-news" className="hero-nav-link" onClick={() => setIsMenuOpen(false)}>
+            Latest News
+          </a>
+          <a href="/explore" className="hero-nav-link" onClick={() => setIsMenuOpen(false)}>
+            Explore
+          </a>
+          <a href="/events" className="hero-nav-link" onClick={() => setIsMenuOpen(false)}>
+            Events
+          </a>
+          <a href="/stories" className="hero-nav-link" onClick={() => setIsMenuOpen(false)}>
+            Stories
+          </a>
+          <a href="/services" className="hero-nav-link" onClick={() => setIsMenuOpen(false)}>
+            Our Services
+          </a>
+        </nav>
 
         {/* Main Hero Content */}
         <div className="container hero-main">

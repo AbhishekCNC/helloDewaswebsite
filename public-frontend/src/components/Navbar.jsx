@@ -80,7 +80,7 @@ const Navbar = () => {
       </nav>
 
       {/* MOBILE MENU DRAWER */}
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`} ban>
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <div className="mobile-menu-header">
           <i
             className="bi bi-x-lg"
@@ -89,14 +89,14 @@ const Navbar = () => {
         </div>
 
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About Dewas</a></li>
-          <li><a href="/news">Latest News</a></li>
-          <li><a href="/explore">Explore</a></li>
-          <li><a href="/events">Events</a></li>
-          <li><a href="/stories">Stories</a></li>
-          <li><a href="/services">Our Services</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a href="/" onClick={() => setMenuOpen(false)}>Home</a></li>
+          <li><a href="/about" onClick={() => setMenuOpen(false)}>About Dewas</a></li>
+          <li><a href="/news" onClick={() => setMenuOpen(false)}>Latest News</a></li>
+          <li><a href="/explore" onClick={() => setMenuOpen(false)}>Explore</a></li>
+          <li><a href="/events" onClick={() => setMenuOpen(false)}>Events</a></li>
+          <li><a href="/stories" onClick={() => setMenuOpen(false)}>Stories</a></li>
+          <li><a href="/services" onClick={() => setMenuOpen(false)}>Our Services</a></li>
+          <li><a href="/contact" onClick={() => setMenuOpen(false)}>Contact</a></li>
         </ul>
       </div>
     </>
