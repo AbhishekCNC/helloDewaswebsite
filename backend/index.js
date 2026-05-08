@@ -8,7 +8,7 @@ const app = express();
 // ✅ Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173","http://localhost:5175", "http://127.0.0.1:5175","http://localhost:5174", "http://127.0.0.1:5174", "https://hellodewas.in","https://gleeful-bienenstitch-28b3cb.netlify.app","https://cool-cannoli-d46bca.netlify.app", "https://melodic-baklava-238223.netlify.app", "https://your-admin-netlify-site.netlify.app" ,"https://legendary-cactus-22bc4f.netlify.app"], // Add your actual admin frontend Netlify URL here
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173","http://localhost:5175", "http://127.0.0.1:5175","http://localhost:5174", "http://127.0.0.1:5174", "https://hellodewas.in","https://gleeful-bienenstitch-28b3cb.netlify.app","https://cool-cannoli-d46bca.netlify.app", "https://melodic-baklava-238223.netlify.app", "https://your-admin-netlify-site.netlify.app" ,"https://legendary-cactus-22bc4f.netlify.app","https://admin-hellodewas.netlify.app"], // Add your actual admin frontend Netlify URL here
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));  
