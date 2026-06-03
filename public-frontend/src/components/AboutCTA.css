@@ -47,11 +47,12 @@
 .about-cta-btn {
   background: transparent;
   color: #ffffff;
-  font-size: 15px;
+  font-size: 1.2rem;
   padding: 14px 36px;
   border-radius: 30px;
   border: 2px solid #4fc3ff;
   cursor: pointer;
+  text-decoration: none;
 }
 
 /* ================= MOBILE EXACT ================= */

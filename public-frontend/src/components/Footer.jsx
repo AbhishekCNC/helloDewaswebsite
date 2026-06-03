@@ -1,4 +1,5 @@
 import "./Footer.css";
+import { Link } from "react-router-dom";
 import logo from "../assets/hello-dewas-logo.png";
 
 const Footer = () => {
@@ -9,7 +10,9 @@ const Footer = () => {
 
         {/* COLUMN 1 */}
         <div className="footer-col">
+          <Link to="/">
           <img src={logo} alt="Hello Dewas" className="footer-logo" />
+          </Link>
 
           <h4>City News & Updates</h4>
           <p className="footer-desc">
@@ -38,11 +41,11 @@ const Footer = () => {
         <div className="footer-col">
           <h4>Our Services</h4>
           <ul>
-            <li>City Guide</li>
-            <li>Business Listing</li>
-            <li>Digital Marketing</li>
-            <li>Event Promotion</li>
-            <li>Emergency Helpline</li>
+            <a href="\about"><li>City Guide</li></a>
+            <a href="\business-listing"><li>Business Listing</li></a>
+            <a href="\services"><li>Digital Marketing</li></a>
+            <a href="\event-promotion"><li>Event Promotion</li></a>
+            <a href="\emergency-helpline"><li>Emergency Helpline</li></a>
             <li>Transportation</li>
             <li>Business & Industries</li>
             <li>Town Gallery</li>

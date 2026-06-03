@@ -1,4 +1,5 @@
 import "./AboutCTA.css";
+import { Link } from "react-router-dom";
 import bgImage from "../assets/hero-desktop.png";
 
 const AboutCTA = () => {
@@ -20,9 +21,9 @@ const AboutCTA = () => {
           — and Hard to Ignore
         </h2>
 
-        <button className="about-cta-btn">
+        <Link className="about-cta-btn" to="/services">
           Get Started
-        </button>
+        </Link>
       </div>
     </section>
   );

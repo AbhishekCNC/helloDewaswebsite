@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./ImageStripSlider.css";
-import strip1Desktop from "../assets/strip1-desktop.png";
+import strip1Desktop from "../assets/strip1-desktop.jpg";
 import strip1Mobile from "../assets/strip1-mobile.png";
-import strip2Desktop from "../assets/strip2-desktop.png";
-import strip3Desktop from "../assets/strip3-desktop.png";
+import strip2Desktop from "../assets/strip2-desktop.jpg";
+import strip3Desktop from "../assets/strip3-desktop.jpg";
 
 
 const slides = [

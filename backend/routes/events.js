@@ -1,31 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 const Event = require("../models/Event");
 
-// ---------- Multer setup ----------
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/events");
-  },
-  filename: function (req, file, cb) {
-    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, unique + path.extname(file.originalname));
+/* ===========================
+   MULTER → CLOUDINARY SETUP
+=========================== */
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "hello-dewas/events",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
   },
 });
 
 const upload = multer({ storage });
 
-// ---------- Helpers ----------
-function normalizePath(p) {
-  return p ? p.replace(/\\/g, "/") : "";
-}
-
-function fileUrl(file) {
-  if (!file) return undefined;
-  return file.path || file.secure_url || file.url || file.location || (file.filename ? "/uploads/events/" + file.filename : undefined);
-}
+/* ===========================
+   FILE URL HELPER
+=========================== */
+const fileUrl = (file) => {
+  if (!file) return null;
+  return file.path || file.secure_url || file.url || file.location || null;
+};
 
 // ---------- CREATE EVENT ----------
 router.post(
@@ -50,13 +49,13 @@ router.post(
 
       const mainImageFile =
         req.files?.main_image && req.files.main_image[0]
-          ? normalizePath(fileUrl(req.files.main_image[0]))
-          : undefined;
+          ? fileUrl(req.files.main_image[0])
+          : null;
 
       const thumbFile =
         req.files?.thumbnail_image && req.files.thumbnail_image[0]
-          ? normalizePath(fileUrl(req.files.thumbnail_image[0]))
-          : undefined;
+          ? fileUrl(req.files.thumbnail_image[0])
+          : null;
 
       const event = await Event.create({
         title,
@@ -115,12 +114,10 @@ router.put(
 
       // only overwrite images if new files are uploaded
       if (req.files?.main_image && req.files.main_image[0]) {
-        update.main_image = normalizePath(fileUrl(req.files.main_image[0]));
+        update.main_image = fileUrl(req.files.main_image[0]);
       }
       if (req.files?.thumbnail_image && req.files.thumbnail_image[0]) {
-        update.thumbnail_image = normalizePath(
-          fileUrl(req.files.thumbnail_image[0])
-        );
+        update.thumbnail_image = fileUrl(req.files.thumbnail_image[0]);
       }
 
       const event = await Event.findByIdAndUpdate(req.params.id, update, {

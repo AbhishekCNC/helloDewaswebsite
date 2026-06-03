@@ -1,7 +1,30 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 const Banner = require("../models/Banner");
-const upload = require("../middleware/upload");
+
+/* ===========================
+   MULTER → CLOUDINARY SETUP
+=========================== */
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "hello-dewas/banners",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
+});
+
+const upload = multer({ storage });
+
+/* ===========================
+   FILE URL HELPER
+=========================== */
+const fileUrl = (file) => {
+  if (!file) return null;
+  return file.path || file.secure_url || file.url || file.location || null;
+};
 
 // ✅ CREATE / UPLOAD banner with TWO images
 router.post(
@@ -27,25 +50,8 @@ router.post(
           .json({ message: "Both desktop_image and mobile_image are required" });
       }
 
-      // helper to extract URL/path from uploaded file
-      const fileUrl = (file) => {
-        if (!file) return null;
-        return file.path || file.secure_url || file.url || file.location || (file.filename ? "/uploads/banners/" + file.filename : null);
-      };
-
       let desktopPath = fileUrl(req.files.desktop_image[0]);
       let mobilePath = fileUrl(req.files.mobile_image[0]);
-
-      // normalize windows backslashes (if any) and ensure leading slash for local paths
-      const normalizeAndSlash = (p) => {
-        if (!p) return p;
-        if (/^https?:\/\//i.test(p)) return p; // remote
-        const cleaned = p.replace(/\\/g, "/");
-        return cleaned.startsWith("/") ? cleaned : "/" + cleaned;
-      };
-
-      desktopPath = normalizeAndSlash(desktopPath);
-      mobilePath = normalizeAndSlash(mobilePath);
 
       const banner = new Banner({
         desktop_image: desktopPath,

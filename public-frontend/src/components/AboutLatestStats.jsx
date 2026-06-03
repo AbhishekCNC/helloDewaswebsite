@@ -1,4 +1,5 @@
 import "./AboutLatestStats.css";
+import { Link } from "react-router-dom";
 import newsImg from "../assets/about-img-3.png";
 
 const LatestStats = () => {
@@ -8,16 +9,9 @@ const LatestStats = () => {
 
         {/* LEFT BIG CARD */}
         <div className="latest-main-card">
-          <img src={newsImg} alt="Latest News" />
-
-          <div className="latest-main-overlay">
-            {/* <h2>
-              HELLO<br />
-              DEWAS
-            </h2>
-            <p>LATEST NEWS & UPDATES</p>
-            <button>READ NOW</button> */}
-          </div>
+          <Link to="/latest-news">
+            <img src={newsImg} alt="Latest News" />
+          </Link>
         </div>
 
         {/* RIGHT STATS */}

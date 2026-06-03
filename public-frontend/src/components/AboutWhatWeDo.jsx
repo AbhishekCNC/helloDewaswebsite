@@ -1,6 +1,6 @@
 import "./AboutWhatWeDo.css";
 import leftImage from "../assets/about-img.png";
-import rightImage from "../assets/about-img-2.png";
+import rightImage from "../assets/about-img-2.jpeg";
 
 const AboutWhatWeDo = () => {
   return (

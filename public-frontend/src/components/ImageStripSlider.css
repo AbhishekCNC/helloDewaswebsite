@@ -16,7 +16,7 @@
   width: 100%;
   height: 260px;
   object-fit: cover;
-  display: block;
+  /* display: block; */
 }
 
 /* Mobile adjustments */
