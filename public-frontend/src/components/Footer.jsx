@@ -42,10 +42,10 @@ const Footer = () => {
           <h4>Our Services</h4>
           <ul>
             <a href="\about"><li>City Guide</li></a>
-            <a href="\business-listing"><li>Business Listing</li></a>
+            <a href="\"><li>Business Listing</li></a>
             <a href="\services"><li>Digital Marketing</li></a>
-            <a href="\event-promotion"><li>Event Promotion</li></a>
-            <a href="\emergency-helpline"><li>Emergency Helpline</li></a>
+            <a href="\"><li>Event Promotion</li></a>
+            <a href="\"><li>Emergency Helpline</li></a>
             <li>Transportation</li>
             <li>Business & Industries</li>
             <li>Town Gallery</li>

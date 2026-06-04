@@ -8,11 +8,11 @@ export default function CityNewsSection() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // limit description to 25 words and append "..." when truncated
+  // limit text to a number of words and append "..." when truncated
   const clampWords = (text, max = 25) => {
     if (!text) return "";
     const words = String(text).split(/\s+/).filter(Boolean);
-    return words.length > max ? words.slice(0, max).join(" ") + "..." : text;
+    return words.length > max ? words.slice(0, max).join(" ") + "..." : words.join(" ");
   };
 
   useEffect(() => {
@@ -65,9 +65,9 @@ export default function CityNewsSection() {
   if (!news.length) {
     return (
       <section className="events-section container my-5">
-        <div className="d-flex flex-column mb-4">
+        <div className="d-flex align-items-center mb-4">
           <h2 className="events-title">City News</h2>
-          <div className="events-title-underline" />
+          <div className="flex-grow-1 ms-3 events-title-underline" />
         </div>
         <p>No city news found.</p>
       </section>
@@ -77,9 +77,9 @@ export default function CityNewsSection() {
   return (
     <section className="events-section container my-5">
       {/* Heading – SAME layout as EventsSection */}
-      <div className="d-flex flex-column mb-4">
+      <div className="d-flex align-items-center mb-4">
         <h2 className="events-title">City News</h2>
-        <div className="events-title-underline" />
+        <div className="flex-grow-1 ms-3 events-title-underline" />
       </div>
 
       {/* Cards – SAME markup/classes as EventsSection */}
@@ -119,12 +119,12 @@ export default function CityNewsSection() {
                   </span>
                 </div>
 
-                {/* Title */}
-                <h5 className="event-card-title">{item.title}</h5>
+                {/* Title – limit to 10 words */}
+                <h5 className="event-card-title">{clampWords(item.title, 10)}</h5>
 
-                {/* Short description – clamped to 25 words */}
+                {/* Short description – limit to 20 words */}
                 <p className="event-card-desc">
-                  {clampWords(item.short_description || item.description || "")}
+                  {clampWords(item.short_description || item.description || "", 20)}
                 </p>
 
                 {/* View button */}

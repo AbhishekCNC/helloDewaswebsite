@@ -132,8 +132,12 @@ export default function HeroSection({ latestNews, latestEvents }) {
               </p>
 
               <div className="d-flex flex-wrap gap-3 mt-4">
-                <button className="hero-primary-btn">About Dewas</button>
-                <button className="hero-secondary-btn">Latest News</button>
+                <Link to="/about" className="hero-primary-btn">
+                  About Dewas
+                </Link>
+                <Link to="/latest-news" className="hero-secondary-btn">
+                  Latest News
+                </Link>
               </div>
             </div>
 

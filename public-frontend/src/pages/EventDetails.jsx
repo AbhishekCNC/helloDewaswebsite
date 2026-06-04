@@ -33,7 +33,11 @@ export default function EventDetails() {
   if (error) return <p className="text-center mt-5 text-danger">{error}</p>;
   if (!event) return <p className="text-center mt-5">Event not found.</p>;
 
-  const imgSrc = buildImageUrl(event.main_image || event.banner || event.thumbnail_image || "");
+  const imgSrc = buildImageUrl(
+    event.main_image || event.banner || event.thumbnail_image || event.thumbnail || event.cover_image || ""
+  );
+
+  const descriptionText = event.description || event.short_description || "";
 
   return (
     <>
@@ -46,11 +50,11 @@ export default function EventDetails() {
 
         {imgSrc && (
           <div className="event-detail-hero">
-            <img src={imgSrc} alt={event.title} />
+            <img src={imgSrc} alt={event.title || "Event image"} />
           </div>
         )}
 
-        <h1 className="event-detail-title">{event.title}</h1>
+        <h1 className="event-detail-title">{event.title || "Event details"}</h1>
 
         <div className="event-detail-meta">
           <div>
@@ -73,9 +77,17 @@ export default function EventDetails() {
           <div className="event-detail-short">{event.short_description}</div>
         )}
 
+        {event.link && (
+          <div className="event-detail-link mb-3">
+            <a href={event.link} target="_blank" rel="noopener noreferrer">
+              Visit event website
+            </a>
+          </div>
+        )}
+
         <div className="event-detail-body">
-          {event.description ? (
-            event.description.split("\n").map((p, idx) => <p key={idx}>{p}</p>)
+          {descriptionText ? (
+            descriptionText.split("\n").map((p, idx) => <p key={idx}>{p}</p>)
           ) : (
             <p>No additional details provided.</p>
           )}

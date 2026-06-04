@@ -49,6 +49,20 @@
   margin-bottom: 16px;
 }
 
+.event-detail-link {
+  margin-bottom: 18px;
+}
+
+.event-detail-link a {
+  color: #ff4c2c;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.event-detail-link a:hover {
+  text-decoration: underline;
+}
+
 .event-detail-body p {
   margin-bottom: 12px;
   line-height: 1.6;

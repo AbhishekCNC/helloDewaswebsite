@@ -76,7 +76,7 @@ export default function UpcomingNewsSection() {
   // 🧠 Split data
   const mainNews = news[0] || null;               // big card left
   const sideNews = news.slice(1, 5);      // 4 small items in middle
-  const extraNews = news.slice(5, 8);     // 3 cards below (older)
+  const extraNews = news.slice(5, 9);     // 4 cards below (older)
 
   const openNews = (id) => {
     navigate(`/news/${id}`);
@@ -141,8 +141,8 @@ export default function UpcomingNewsSection() {
                       year: "numeric",
                     })}
                   </div>
-                  <h4 className="up-list-title">{item.title}</h4>
-                  <p className="up-list-desc">{truncateWords(item.short_description, 25)}</p>
+                  <h4 className="up-list-title">{truncateWords(item.title, 10)}</h4>
+                  <p className="up-list-desc">{truncateWords(item.short_description, 20)}</p>
                 </div>
               </div>
             ))}
@@ -151,10 +151,7 @@ export default function UpcomingNewsSection() {
 
         {/* RIGHT: STATIC INFO BOXES (PLACEHOLDER FOR NOW) */}
         <div className="col-lg-3 ">
-          {/* <div className="up-static-box mb-3">
-            <p className="mb-1 small text-muted">Region covered by district</p>
-            <button className="btn btn-dark w-100">7,020 sq km</button>
-          </div> */}
+      
           <div className="up-static-box mb-3">
             <p className="mb-1 small text-muted">
               Total people living in the district
@@ -176,10 +173,10 @@ export default function UpcomingNewsSection() {
         </div>
       </div>
 
-      {/* BELOW: 3 MORE CARDS (OLDER NEWS) */}
+      {/* BELOW: 4 MORE CARDS (OLDER NEWS) */}
       <div className="row g-4 mt-4">
         {extraNews.map((item) => (
-          <div key={item._id} className="col-lg-4">
+          <div key={item._id} className="col-lg-3">
             <div
               className="up-extra-card"
               onClick={() => openNews(item._id)}
@@ -200,8 +197,8 @@ export default function UpcomingNewsSection() {
                     year: "numeric",
                   })}
                 </div>
-                <h4 className="up-extra-title">{item.title}</h4>
-                <p className="up-extra-desc">{item.short_description}</p>
+                <h4 className="up-extra-title">{truncateWords(item.title, 10)}</h4>
+                <p className="up-extra-desc">{truncateWords(item.short_description, 20)}</p>
                 <button className="btn btn-link p-0">Read More</button>
               </div>
             </div>

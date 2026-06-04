@@ -8,7 +8,12 @@
 .mn-heading {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 0;
+}
+
+.mn-heading-underline {
+  height: 2px;
+  background: #e55a3c;
 }
 
 /* --- TOP ROW -------------------------------------------------------- */

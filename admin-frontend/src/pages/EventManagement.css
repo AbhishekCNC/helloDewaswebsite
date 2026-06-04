@@ -23,6 +23,10 @@ body{
 .form-section {
   border-radius: 10px;
   background-color: #ffffff;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .table thead {

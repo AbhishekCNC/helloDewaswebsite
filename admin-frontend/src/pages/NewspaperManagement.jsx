@@ -66,7 +66,8 @@ export default function NewspaperManagement() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (!file || !thumbnail) {
+      // For new newspapers: both file and thumbnail required
+      if (!editMode && (!file || !thumbnail)) {
         alert("❌ Please upload both file and thumbnail!");
         return;
       }
@@ -74,8 +75,8 @@ export default function NewspaperManagement() {
       const form = new FormData();
       form.append("title", formData.title);
       form.append("date", formData.date);
-      form.append("file", file);
-      form.append("thumbnail", thumbnail);
+      if (file) form.append("file", file);
+      if (thumbnail) form.append("thumbnail", thumbnail);
 
       console.log("📤 Uploading newspaper to:", `${API_BASE_URL}/api/newspapers`);
       const res = await axios.post(`${API_BASE_URL}/api/newspapers`, form);
@@ -83,6 +84,7 @@ export default function NewspaperManagement() {
 
       alert("✅ Newspaper added successfully!");
       setFormVisible(false);
+      setEditMode(false);
       resetForm();
       fetchPapers();
     } catch (error) {
@@ -94,9 +96,12 @@ export default function NewspaperManagement() {
   const handleEdit = (paper) => {
     setSelectedPaper(paper);
     setEditMode(true);
+    setFormVisible(true);
     setFormData({ title: paper.title, date: paper.date.split("T")[0] });
     setPreviewFile(paper.file);
     setPreviewThumb(paper.thumbnail);
+    setFile(null);
+    setThumbnail(null);
   };
 
   const handleUpdate = async (e) => {
@@ -114,6 +119,7 @@ export default function NewspaperManagement() {
 
       alert("✅ Newspaper updated successfully!");
       setEditMode(false);
+      setFormVisible(false);
       resetForm();
       fetchPapers();
     } catch (error) {
@@ -143,6 +149,7 @@ export default function NewspaperManagement() {
     setPreviewFile(null);
     setPreviewThumb(null);
     setSelectedPaper(null);
+    setEditMode(false);
   };
 
   return (
@@ -159,10 +166,12 @@ export default function NewspaperManagement() {
 
       {formVisible && (
         <form
-          onSubmit={handleSubmit}
+          onSubmit={editMode ? handleUpdate : handleSubmit}
           className="card shadow-sm p-4 mt-3 form-section"
         >
-          <h5 className="fw-bold mb-3 text-primary">🗞️ Add Newspaper</h5>
+          <h5 className="fw-bold mb-3 text-primary">
+            {editMode ? "✏️ Edit Newspaper" : "🗞️ Add Newspaper"}
+          </h5>
           <div className="row g-3">
             <div className="col-md-6">
               <label className="form-label fw-semibold">Title</label>
@@ -188,7 +197,9 @@ export default function NewspaperManagement() {
             </div>
 
             <div className="col-md-6 text-center">
-              <label className="form-label fw-semibold">Upload File (PDF / Image) *</label>
+              <label className="form-label fw-semibold">
+                Upload File (PDF / Image) {!editMode ? "*" : "(optional)"}
+              </label>
               {previewFile ? (
                 <img src={buildUrl(previewFile)} alt="Preview" className="img-preview" />
               ) : (
@@ -196,14 +207,17 @@ export default function NewspaperManagement() {
               )}
               <input
                 type="file"
+                accept="application/pdf,image/*"
                 className="form-control mt-2"
                 onChange={handleFile}
-                required
+                required={!editMode}
               />
             </div>
 
             <div className="col-md-6 text-center">
-              <label className="form-label fw-semibold">Thumbnail Image *</label>
+              <label className="form-label fw-semibold">
+                Thumbnail Image {!editMode ? "*" : "(optional)"}
+              </label>
               {previewThumb ? (
                 <img src={buildUrl(previewThumb)} alt="Thumbnail" className="img-preview" />
               ) : (
@@ -214,12 +228,25 @@ export default function NewspaperManagement() {
                 accept="image/*"
                 className="form-control mt-2"
                 onChange={handleThumbnail}
-                required
+                required={!editMode}
               />
             </div>
 
             <div className="col-12 mt-3 text-end">
-              <button className="btn btn-primary px-4">Submit</button>
+              <button
+                type="button"
+                className="btn btn-secondary me-2"
+                onClick={() => {
+                  setFormVisible(false);
+                  setEditMode(false);
+                  resetForm();
+                }}
+              >
+                Cancel
+              </button>
+              <button className="btn btn-primary px-4">
+                {editMode ? "Update" : "Submit"}
+              </button>
             </div>
           </div>
         </form>

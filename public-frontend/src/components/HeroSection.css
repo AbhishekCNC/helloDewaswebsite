@@ -110,6 +110,7 @@
   padding: 10px 26px;
   font-size: 14px;
   border: none;
+  text-decoration: none;
 }
 
 .hero-secondary-btn {
@@ -119,6 +120,7 @@
   font-size: 14px;
   border: 1px solid #ffffff80;
   color: #ffffff;
+  text-decoration: none;
 }
 
 /* Right slider card */

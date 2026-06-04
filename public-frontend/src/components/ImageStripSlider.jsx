@@ -1,60 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./ImageStripSlider.css";
-import strip1Desktop from "../assets/strip1-desktop.jpg";
-import strip1Mobile from "../assets/strip1-mobile.png";
-import strip2Desktop from "../assets/strip2-desktop.jpg";
-import strip3Desktop from "../assets/strip3-desktop.jpg";
-
-
-const slides = [
-  {
-    id: 1,
-    desktop: strip1Desktop,
-    mobile: strip1Mobile,
-  },
-  {
-    id: 2,
-    desktop: strip2Desktop,
-    mobile: strip1Mobile,
-  },
-  {
-    id: 3,
-    desktop: strip3Desktop,
-    mobile: strip1Mobile,
-  },
-];
+import { getActiveBanners, buildImageUrl } from "../api/api.js";
 
 export default function ImageStripSlider() {
+  const [banners, setBanners] = useState([]);
   const [index, setIndex] = useState(0);
+  const intervalRef = useRef(null);
 
-  // Auto-slide every 2 seconds
+  // fetch up to 5 active banners from backend
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % slides.length);
-    }, 2000);
+    let mounted = true;
+    getActiveBanners()
+      .then((data) => {
+        if (!mounted) return;
+        // sort by createdAt desc if available, then take first 5
+        const sorted = (data || []).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+        setBanners(sorted.slice(0, 5));
+      })
+      .catch((err) => {
+        console.error("Failed to load banners for ImageStripSlider:", err);
+      });
 
-    return () => clearInterval(timer);
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const current = slides[index];
+  // Auto-slide every 3 seconds (only when we have banners)
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    if (!banners || banners.length === 0) return;
+
+    intervalRef.current = setInterval(() => {
+      setIndex((prev) => (prev + 1) % banners.length);
+    }, 3000);
+
+    return () => clearInterval(intervalRef.current);
+  }, [banners]);
+
+  const current = banners.length > 0 ? banners[index] : null;
+
+  // Helper to resolve image URL (handles Cloudinary absolute urls or local uploads)
+  const imgFor = (banner, type) => {
+    if (!banner) return "";
+    const val = type === "mobile" ? banner.mobile_image || banner.mobile || banner.desktop_image : banner.desktop_image || banner.desktop || banner.mobile_image;
+    return buildImageUrl(val || "");
+  };
 
   return (
     <section className="strip-slider-section">
       <div className="container p-0">
         <div className="strip-slider-wrapper">
-          <picture>
-            {/* mobile image */}
-            <source
-              media="(max-width: 768px)"
-              srcSet={current.mobile}
-            />
-            {/* desktop image */}
-            <img
-              src={current.desktop}
-              alt=""
-              className="strip-slider-image"
-            />
-          </picture>
+          {current ? (
+            <picture>
+              <source media="(max-width: 768px)" srcSet={imgFor(current, "mobile")} />
+              <img src={imgFor(current, "desktop")} alt={current.categories || "banner"} className="strip-slider-image" />
+            </picture>
+          ) : (
+            // fallback static markup while loading
+            <div className="strip-slider-placeholder" />
+          )}
         </div>
       </div>
     </section>

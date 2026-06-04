@@ -32,6 +32,7 @@ export default function AdminLayout({ children }) {
             marginLeft: showSidebar ? "220px" : "0",
             minHeight: "100vh",
             transition: "margin 0.3s ease",
+            overflowY: "auto",
           }}
         >
           {children}

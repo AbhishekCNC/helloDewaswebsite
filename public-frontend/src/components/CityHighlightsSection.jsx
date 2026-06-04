@@ -78,12 +78,7 @@ administraion to lead country.</p>
 
           {/* Desktop arrows (hidden on mobile) */}
           <div className="ch-arrows d-none d-md-flex">
-            <button className="ch-arrow-btn" onClick={handlePrev}>
-              <i className="bi bi-chevron-left" />
-            </button>
-            <button className="ch-arrow-btn ms-2" onClick={handleNext}>
-              <i className="bi bi-chevron-right" />
-            </button>
+            
           </div>
         </div>
 

@@ -122,7 +122,10 @@ export default function MoreNewsSection() {
   if (!news || news.length === 0) {
     return (
       <section className="more-news-section container my-5">
-        <h2 className="mn-heading">More News</h2>
+        <div className="d-flex align-items-center mb-4">
+          <h2 className="mn-heading">More News</h2>
+          <div className="flex-grow-1 ms-3 mn-heading-underline" />
+        </div>
         <p>No news available.</p>
       </section>
     );
@@ -136,7 +139,10 @@ export default function MoreNewsSection() {
 
   return (
     <section className="more-news-section container my-5">
-      <h2 className="mn-heading">More News</h2>
+      <div className="d-flex align-items-center mb-4">
+        <h2 className="mn-heading">More News</h2>
+        <div className="flex-grow-1 ms-3 mn-heading-underline" />
+      </div>
 
       {/* TOP ROW: left small list, big featured, right small list */}
       <div className="mn-top-row">
