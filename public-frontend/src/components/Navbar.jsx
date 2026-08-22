@@ -57,10 +57,14 @@ const Navbar = () => {
       {/* MOBILE NAVBAR */}
       <nav className="mobile-nav">
         <div className="mobile-left">
-          <i
-            className="bi bi-list"
+          <button
+            type="button"
+            className="mobile-menu-toggle"
             onClick={() => setMenuOpen(true)}
-          ></i>
+            aria-label="Open navigation menu"
+          >
+            ☰
+          </button>
         </div>
 
         <div className="mobile-center">
@@ -80,12 +84,16 @@ const Navbar = () => {
       </nav>
 
       {/* MOBILE MENU DRAWER */}
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <div className="mobile-menu-header">
-          <i
-            className="bi bi-x-lg"
+      <div className={`navbar-mobile-menu ${menuOpen ? "open" : ""}`}>
+        <div className="navbar-mobile-menu-header">
+          <button
+            type="button"
+            className="navbar-mobile-menu-close"
             onClick={() => setMenuOpen(false)}
-          ></i>
+            aria-label="Close navigation menu"
+          >
+            ×
+          </button>
         </div>
 
         <ul>

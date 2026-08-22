@@ -107,7 +107,6 @@ export default function NewsDetails() {
                 <img src={buildImageUrl(item.thumbnail || item.main_image)} alt={item.title} />
                 <div>
                   <h4>{item.title}</h4>
-                  <p>Local residents turned an empty plot into a green garden.</p>
                 </div>
               </Link>
             ))}

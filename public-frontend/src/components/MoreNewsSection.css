@@ -300,7 +300,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .mna-grid-wrapper {
+    display: grid;
+    margin-top: 32px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
   }
 }
 
@@ -320,13 +323,22 @@
   }
 
   .mn-banner-slider {
-    min-width: 400px;
+    width: 100%;
     min-height: 150px;
+    max-width: 100%;
   }
-  .mn-grid-image-wrapper{
+  .mn-grid-image-wrapper {
     height: 160px;
   }
 }
+
+.mna-banner-row,
+.mn-banner-row {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 24px 0;
+}
+
 
 .for-square{
   display: flex;

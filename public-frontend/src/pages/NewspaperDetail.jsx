@@ -54,10 +54,15 @@ export default function NewspaperDetail() {
   });
 
   const pdfPath = paper && (paper.file || paper.pdf_file || paper.pdf || paper.file_path);
+  const pdfViewerUrl = pdfPath
+    ? `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+        buildImageUrl(pdfPath)
+      )}`
+    : "";
 
   return (
     <div className="npd-page container my-4 my-md-5">
-      {loading && <p>Loading PDF...</p>}
+      {loading && <p>Loading newspaper...</p>}
       {error && <p className="text-danger">{error}</p>}
 
       {!loading && !error && paper && (
@@ -81,7 +86,7 @@ export default function NewspaperDetail() {
                 <div className="npd-iframe-wrapper">
                   <iframe
                     title={paper.title}
-                    src={buildImageUrl(pdfPath)}
+                    src={pdfViewerUrl}
                     className="npd-iframe"
                   />
                 </div>

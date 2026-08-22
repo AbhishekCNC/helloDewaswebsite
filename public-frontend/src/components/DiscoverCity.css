@@ -20,8 +20,8 @@
 .discover-line {
   flex: 1;
   height: 3px;
-  background: #f2a93b;           /* golden line */
-  max-width: 420px;
+  background: #f2a93b; /* golden line */
+  max-width: 942px;
 }
 
 /* Grid layout */

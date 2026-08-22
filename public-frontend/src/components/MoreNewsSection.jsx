@@ -33,8 +33,9 @@ function BannerSlider({ banners }) {
   const current = banners[index];
   const imgPath =
     (isMobile &&
-      (current.mobile_image || current.desktop_image || current.image)) ||
+      (current.mobile_image || current.mobile || current.desktop_image || current.desktop || current.image)) ||
     current.desktop_image ||
+    current.desktop ||
     current.image;
 
   const next = () => setIndex((prev) => (prev + 1) % banners.length);

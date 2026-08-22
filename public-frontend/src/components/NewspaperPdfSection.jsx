@@ -29,6 +29,10 @@ export default function NewspaperPdfSection() {
     navigate(`/newspapers/${id}`);
   };
 
+  const isImageUrl = (url) => {
+    return url && !/\.pdf(\?.*)?$/i.test(url);
+  };
+
   return (
     <section className="np-section container ">
       {/* Section heading */}
@@ -65,7 +69,7 @@ export default function NewspaperPdfSection() {
                 onClick={() => openPaper(paper._id)}
               >
                 <div className="np-thumb-wrapper">
-                  {thumb ? (
+                  {thumb && isImageUrl(thumb) ? (
                     <img
                       src={buildImageUrl(thumb)}
                       alt={paper.title}

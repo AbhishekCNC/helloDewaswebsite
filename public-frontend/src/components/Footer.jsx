@@ -74,12 +74,24 @@ const Footer = () => {
 
           <h5>Social Links</h5>
           <div className="footer-socials">
-            <i className="bi bi-whatsapp"></i>
-            <i className="bi bi-pinterest"></i>
-            <i className="bi bi-twitter-x"></i>
-            <i className="bi bi-youtube"></i>
-            <i className="bi bi-instagram"></i>
-            <i className="bi bi-facebook"></i>
+            <a href="https://chat.whatsapp.com/CIpNdN0E7FHCoOP1G1Wpm0?mode=ems_copy_t" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+              <i className="bi bi-whatsapp"></i>
+            </a>
+            <a href="https://pin.it/3vbeGal" target="_blank" rel="noreferrer" aria-label="Pinterest">
+              <i className="bi bi-pinterest"></i>
+            </a>
+            <a href="https://twitter.com/hellodewas?s=09" target="_blank" rel="noreferrer" aria-label="X">
+              <i className="bi bi-twitter-x"></i>
+            </a>
+            <a href="https://youtube.com/@hellodewas?si=coNJvENsVTVFoCul" target="_blank" rel="noreferrer" aria-label="YouTube">
+              <i className="bi bi-youtube"></i>
+            </a>
+            <a href="https://www.instagram.com/hellodewas?igsh=MWo1YjF3NnZwdXcwbw==" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <i className="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.facebook.com/share/1CnWBhD16D/" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <i className="bi bi-facebook"></i>
+            </a>
           </div>
         </div>
 
