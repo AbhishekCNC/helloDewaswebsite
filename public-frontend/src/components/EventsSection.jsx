@@ -84,10 +84,10 @@ export default function EventsSection() {
                   <span className="event-date-text">
                     {ev.date
                       ? new Date(ev.date).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "long",
-                          year: "numeric",
-                        })
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })
                       : "Date TBA"}
                   </span>
                 </div>

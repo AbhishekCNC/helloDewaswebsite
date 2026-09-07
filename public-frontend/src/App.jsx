@@ -6,7 +6,7 @@ import NewspaperDetail from "./pages/NewspaperDetail";
 import EventDetails from "./pages/EventDetails";
 import Explore from "./pages/Explore";
 
-import About from "./pages/About";  
+import About from "./pages/About";
 import Services from "./pages/Services";
 import Nature from "./pages/Nature";
 import Heritage from "./pages/Heritage";
@@ -37,7 +37,7 @@ export default function App() {
       <Route path="/events" element={<Events />} />
       <Route path="/stories" element={<Stories />} />
 
-    
+
     </Routes>
   );
 }

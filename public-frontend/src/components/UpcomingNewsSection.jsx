@@ -13,7 +13,7 @@ function makeCandidates(path) {
     // try swapping localhost <-> 127.0.0.1 in case of host resolution issues
     if (base.includes("localhost")) candidates.push(base.replace("localhost", "127.0.0.1"));
     if (base.includes("127.0.0.1")) candidates.push(base.replace("127.0.0.1", "localhost"));
-  } catch (e) {}
+  } catch (e) { }
   return candidates.filter(Boolean);
 }
 
@@ -151,7 +151,7 @@ export default function UpcomingNewsSection() {
 
         {/* RIGHT: STATIC INFO BOXES (PLACEHOLDER FOR NOW) */}
         <div className="col-lg-3 ">
-      
+
           <div className="up-static-box mb-3">
             <p className="mb-1 small text-muted">
               Total people living in the district

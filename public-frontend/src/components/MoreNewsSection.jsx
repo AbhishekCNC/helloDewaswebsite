@@ -1,11 +1,17 @@
 // src/sections/MoreNewsSection.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllNews, getAllBanners, buildImageUrl } from "../api/api";
 import "./MoreNewsSection.css";
 
-function BannerSlider({ banners }) {
+const INLINE_AD_INTERVAL = 8;
+const MAX_INLINE_ADS = 3;
+
+function BannerSlider({ banners, startOffset = 0, slotIndex = 0 }) {
   const [index, setIndex] = useState(0);
+  const [hasError, setHasError] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const containerRef = useRef(null);
 
   // simple mobile detection
   const [isMobile, setIsMobile] = useState(
@@ -20,17 +26,34 @@ function BannerSlider({ banners }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Pause carousel autoplay if outside viewport
   useEffect(() => {
-    if (!banners || banners.length === 0) return;
+    if (!containerRef.current || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!banners || banners.length <= 1 || !isVisible) return;
     const id = setInterval(() => {
       setIndex((prev) => (prev + 1) % banners.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(id);
-  }, [banners]);
+  }, [banners, isVisible]);
 
-  if (!banners || banners.length === 0) return null;
+  if (!banners || banners.length === 0 || hasError) return null;
 
-  const current = banners[index];
+  // Rotate starting banner deterministically by slot index
+  const currentBannerIndex = (index + startOffset) % banners.length;
+  const current = banners[currentBannerIndex];
+  if (!current) return null;
+
   const imgPath =
     (isMobile &&
       (current.mobile_image || current.mobile || current.desktop_image || current.desktop || current.image)) ||
@@ -38,40 +61,93 @@ function BannerSlider({ banners }) {
     current.desktop ||
     current.image;
 
-  const next = () => setIndex((prev) => (prev + 1) % banners.length);
-  const prev = () =>
+  if (!imgPath) return null;
+
+  const hasMultiple = banners.length > 1;
+
+  const next = (e) => {
+    e.stopPropagation();
+    setIndex((prev) => (prev + 1) % banners.length);
+  };
+
+  const prev = (e) => {
+    e.stopPropagation();
     setIndex((prev) => (prev - 1 + banners.length) % banners.length);
+  };
+
+  const handleBannerClick = () => {
+    const targetUrl = current.link || current.url || current.redirect_url;
+    if (targetUrl) {
+      if (targetUrl.startsWith("http://") || targetUrl.startsWith("https://")) {
+        window.open(targetUrl, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = targetUrl;
+      }
+    }
+  };
 
   return (
-    <div className="mn-banner-slider">
-      <button className="mn-banner-arrow mn-banner-arrow-left" onClick={prev}>
-        ‹
-      </button>
+    <div className="mn-banner-wrapper" ref={containerRef}>
+      <div className="mn-ad-label">Advertisement</div>
+      <div
+        className="mn-banner-slider"
+        onClick={handleBannerClick}
+        style={{
+          cursor:
+            current.link || current.url || current.redirect_url
+              ? "pointer"
+              : "default",
+        }}
+      >
+        {hasMultiple && (
+          <button
+            type="button"
+            className="mn-banner-arrow mn-banner-arrow-left"
+            onClick={prev}
+            aria-label="Previous advertisement"
+          >
+            ‹
+          </button>
+        )}
 
-      <div className="mn-banner-window">
-        {imgPath && (
+        <div className="mn-banner-window">
           <img
             src={buildImageUrl(imgPath)}
-            alt={current.title || "banner"}
+            alt={current.title || "Advertisement Banner"}
             className="mn-banner-img"
+            loading="lazy"
+            onError={() => setHasError(true)}
           />
+        </div>
+
+        {hasMultiple && (
+          <button
+            type="button"
+            className="mn-banner-arrow mn-banner-arrow-right"
+            onClick={next}
+            aria-label="Next advertisement"
+          >
+            ›
+          </button>
         )}
-      </div>
 
-      <button className="mn-banner-arrow mn-banner-arrow-right" onClick={next}>
-        ›
-      </button>
-
-      <div className="mn-banner-dots">
-        {banners.map((b, i) => (
-          <span
-            key={b._id || i}
-            className={
-              "mn-banner-dot" + (i === index ? " mn-banner-dot-active" : "")
-            }
-            onClick={() => setIndex(i)}
-          />
-        ))}
+        {hasMultiple && (
+          <div className="mn-banner-dots">
+            {banners.map((b, i) => (
+              <span
+                key={b._id || `dot-${slotIndex}-${i}`}
+                className={
+                  "mn-banner-dot" +
+                  (i === currentBannerIndex ? " mn-banner-dot-active" : "")
+                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIndex((i - startOffset + banners.length * 100) % banners.length);
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -132,11 +208,15 @@ export default function MoreNewsSection() {
     );
   }
 
+  const activeBanners = (banners || []).filter(
+    (b) => b && b.display !== false && b.status !== "inactive"
+  );
+
   const featured = news[0];          // big center card
   const leftSmall = news.slice(1, 3);
   const rightSmall = news.slice(3, 5);
-  const rest = news.slice(5);        // medium grid cards
-  const small = news.slice(1);
+  const rest = news.slice(5);        // medium grid cards (desktop)
+  const small = news.slice(1);       // grid cards (mobile/tablet)
 
   return (
     <section className="more-news-section container my-5">
@@ -229,8 +309,7 @@ export default function MoreNewsSection() {
           </div>
         </div>
 
-        
-          <div className="mn-side-column">
+        <div className="mn-side-column">
           {rightSmall.map((item) => (
             <div
               key={item._id}
@@ -269,106 +348,136 @@ export default function MoreNewsSection() {
             </div>
           ))}
         </div>
-
       </div>
 
-      {/* BELOW: medium cards grid + banner slider row in between */}
+      {/* BELOW: Desktop 4-column grid with inline advertisements every 8 cards */}
       <div className="mn-grid-wrapper">
-        {rest.map((item, idx) => (
-          <React.Fragment key={item._id}>
-            {/* insert banner row AFTER the first row of 4 cards */}
-            {idx === 4 && banners && banners.length > 0 && (
-              <div className="mn-banner-row">
-                <BannerSlider banners={banners.slice(0, 3)} />
-              </div>
-            )}
+        {rest.map((item, idx) => {
+          const isInterval = (idx + 1) % INLINE_AD_INTERVAL === 0;
+          const hasMoreNews = idx + 1 < rest.length;
+          const slotIndex = Math.floor((idx + 1) / INLINE_AD_INTERVAL) - 1;
+          const isWithinMax = slotIndex < MAX_INLINE_ADS;
+          const shouldShowAd =
+            isInterval && hasMoreNews && isWithinMax && activeBanners.length > 0;
 
-            <div
-              className="mn-grid-card"
-              onClick={() => openNews(item._id)}
-            >
-              <div className="mn-grid-image-wrapper">
-                {item.main_image || item.thumbnail_image ? (
-                  <img
-                    src={buildImageUrl(
-                      item.main_image || item.thumbnail_image
-                    )}
-                    alt={item.title}
-                  />
-                ) : null}
-              </div>
-              <div className="mn-grid-body">
-                <div className="mn-date">
-                  {new Date(
-                    item.published_at || item.createdAt
-                  ).toLocaleDateString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
+          return (
+            <React.Fragment key={item._id || `rest-${idx}`}>
+              <div
+                className="mn-grid-card"
+                onClick={() => openNews(item._id)}
+              >
+                <div className="mn-grid-image-wrapper">
+                  {item.main_image || item.thumbnail_image ? (
+                    <img
+                      src={buildImageUrl(
+                        item.main_image || item.thumbnail_image
+                      )}
+                      alt={item.title}
+                    />
+                  ) : null}
                 </div>
-                <h4 className="mn-grid-title">{item.title}</h4>
-                <p className="mn-grid-desc">
-                  {(item.short_description || item.description || "")
-                    .slice(0, 120)
-                    .trim()}
-                  {(item.short_description || item.description || "").length >
-                    120 && "…"}
-                </p>
+                <div className="mn-grid-body">
+                  <div className="mn-date">
+                    {new Date(
+                      item.published_at || item.createdAt
+                    ).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </div>
+                  <h4 className="mn-grid-title">{item.title}</h4>
+                  <p className="mn-grid-desc">
+                    {(item.short_description || item.description || "")
+                      .slice(0, 120)
+                      .trim()}
+                    {(item.short_description || item.description || "").length >
+                      120 && "…"}
+                  </p>
+                </div>
               </div>
-            </div>
-          </React.Fragment>
-        ))}
+
+              {shouldShowAd && (
+                <div
+                  className="mn-banner-row"
+                  key={`inline-ad-slot-${slotIndex}`}
+                >
+                  <BannerSlider
+                    banners={activeBanners}
+                    slotIndex={slotIndex}
+                    startOffset={slotIndex % activeBanners.length}
+                  />
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
 
-      {/* for mobile view */}
-       <div className="mna-grid-wrapper">
-        {small.map((item, idx) => (
-          <React.Fragment key={item._id}>
-            {/* insert banner row AFTER the first row of 4 cards */}
-            {idx === 4 && banners && banners.length > 0 && (
-              <div className="mna-banner-row">
-                <BannerSlider banners={banners.slice(0, 3)} />
-              </div>
-            )}
+      {/* Mobile/Tablet responsive grid with inline advertisements */}
+      <div className="mna-grid-wrapper">
+        {small.map((item, idx) => {
+          const isInterval = (idx + 1) % INLINE_AD_INTERVAL === 0;
+          const hasMoreNews = idx + 1 < small.length;
+          const slotIndex = Math.floor((idx + 1) / INLINE_AD_INTERVAL) - 1;
+          const isWithinMax = slotIndex < MAX_INLINE_ADS;
+          const shouldShowAd =
+            isInterval && hasMoreNews && isWithinMax && activeBanners.length > 0;
 
-            <div
-              className="mna-grid-card"
-              onClick={() => openNews(item._id)}
-            >
-              <div className="mna-grid-image-wrapper">
-                {item.main_image || item.thumbnail_image ? (
-                  <img
-                    src={buildImageUrl(
-                      item.main_image || item.thumbnail_image
-                    )}
-                    alt={item.title}
-                  />
-                ) : null}
-              </div>
-              <div className="mna-grid-body">
-                <div className="mna-date">
-                  {new Date(
-                    item.published_at || item.createdAt
-                  ).toLocaleDateString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
+          return (
+            <React.Fragment key={item._id || `small-${idx}`}>
+              <div
+                className="mna-grid-card"
+                onClick={() => openNews(item._id)}
+              >
+                <div className="mna-grid-image-wrapper">
+                  {item.main_image || item.thumbnail_image ? (
+                    <img
+                      src={buildImageUrl(
+                        item.main_image || item.thumbnail_image
+                      )}
+                      alt={item.title}
+                    />
+                  ) : null}
                 </div>
-                <h4 className="mna-grid-title">{item.title}</h4>
-                <p className="mna-grid-desc">
-                  {(item.short_description || item.description || "")
-                    .slice(0, 120)
-                    .trim()}
-                  {(item.short_description || item.description || "").length >
-                    120 && "…"}
-                </p>
+                <div className="mna-grid-body">
+                  <div className="mna-date">
+                    {new Date(
+                      item.published_at || item.createdAt
+                    ).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </div>
+                  <h4 className="mna-grid-title">{item.title}</h4>
+                  <p className="mna-grid-desc">
+                    {(item.short_description || item.description || "")
+                      .slice(0, 120)
+                      .trim()}
+                    {(item.short_description || item.description || "").length >
+                      120 && "…"}
+                  </p>
+                </div>
               </div>
-            </div>
-          </React.Fragment>
-        ))}
+
+              {shouldShowAd && (
+                <div
+                  className="mna-banner-row"
+                  key={`mna-ad-slot-${slotIndex}`}
+                >
+                  <BannerSlider
+                    banners={activeBanners}
+                    slotIndex={slotIndex}
+                    startOffset={slotIndex % activeBanners.length}
+                  />
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
     </section>
   );
 }
+

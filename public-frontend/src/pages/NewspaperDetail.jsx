@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   getNewspaperById,
   getAllNewspapers,
   buildImageUrl,
 } from "../api/api";
+import InitialPageLoader from "../components/InitialPageLoader";
 import "./NewspaperDetail.css";
 
 export default function NewspaperDetail() {
@@ -18,26 +19,27 @@ export default function NewspaperDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        setLoading(true);
-        const [current, list] = await Promise.all([
-          getNewspaperById(id),
-          getAllNewspapers(),
-        ]);
-        setPaper(current);
-        setAllPapers(list || []);
-        setError(null);
-      } catch (err) {
-        console.error("Error loading newspaper detail:", err);
-        setError("Unable to load this newspaper.");
-      } finally {
-        setLoading(false);
-      }
+  const load = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const [current, list] = await Promise.all([
+        getNewspaperById(id),
+        getAllNewspapers(),
+      ]);
+      setPaper(current);
+      setAllPapers(list || []);
+    } catch (err) {
+      console.error("Error loading newspaper detail:", err);
+      setError("Unable to load this newspaper.");
+    } finally {
+      setLoading(false);
     }
-    load();
   }, [id]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const handleOpen = (paperId) => {
     if (paperId === id) return;
@@ -56,14 +58,19 @@ export default function NewspaperDetail() {
   const pdfPath = paper && (paper.file || paper.pdf_file || paper.pdf || paper.file_path);
   const pdfViewerUrl = pdfPath
     ? `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
-        buildImageUrl(pdfPath)
-      )}`
+      buildImageUrl(pdfPath)
+    )}`
     : "";
 
   return (
-    <div className="npd-page container my-4 my-md-5">
-      {loading && <p>Loading newspaper...</p>}
-      {error && <p className="text-danger">{error}</p>}
+    <>
+      {(loading || (error && !paper)) && (
+        <InitialPageLoader
+          error={error}
+          onRetry={load}
+        />
+      )}
+      <div className="npd-page container my-4 my-md-5">
 
       {!loading && !error && paper && (
         <>
@@ -131,9 +138,8 @@ export default function NewspaperDetail() {
                         <button
                           key={p._id}
                           type="button"
-                          className={`npd-list-item ${
-                            p._id === id ? "active" : ""
-                          }`}
+                          className={`npd-list-item ${p._id === id ? "active" : ""
+                            }`}
                           onClick={() => handleOpen(p._id)}
                         >
                           <div className="npd-list-date">{d}</div>
@@ -151,5 +157,8 @@ export default function NewspaperDetail() {
         </>
       )}
     </div>
+    </>
   );
 }
+
+

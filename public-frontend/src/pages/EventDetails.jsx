@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getEventById, buildImageUrl } from "../api/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import InitialPageLoader from "../components/InitialPageLoader";
 import "./EventDetails.css";
 
 export default function EventDetails() {
@@ -12,35 +13,32 @@ export default function EventDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        setLoading(true);
-        const ev = await getEventById(id);
-        setEvent(ev);
-        setError(null);
-      } catch (err) {
-        console.error("Error loading event:", err);
-        setError("Unable to load event details.");
-      } finally {
-        setLoading(false);
-      }
+  const load = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const ev = await getEventById(id);
+      setEvent(ev);
+    } catch (err) {
+      console.error("Error loading event:", err);
+      setError("Unable to load event details.");
+    } finally {
+      setLoading(false);
     }
-    load();
   }, [id]);
 
-  if (loading) return <p className="text-center mt-5">Loading event...</p>;
-  if (error) return <p className="text-center mt-5 text-danger">{error}</p>;
-  if (!event) return <p className="text-center mt-5">Event not found.</p>;
-
-  const imgSrc = buildImageUrl(
-    event.main_image || event.banner || event.thumbnail_image || event.thumbnail || event.cover_image || ""
-  );
-
-  const descriptionText = event.description || event.short_description || "";
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <>
+      {(loading || (error && !event)) && (
+        <InitialPageLoader
+          error={error}
+          onRetry={load}
+        />
+      )}
       <Navbar />
 
       <div className="container event-detail-page my-4">

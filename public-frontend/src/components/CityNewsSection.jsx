@@ -108,13 +108,13 @@ export default function CityNewsSection() {
                   <span className="event-date-text">
                     {item.published_at
                       ? new Date(item.published_at).toLocaleDateString(
-                          "en-IN",
-                          {
-                            day: "2-digit",
-                            month: "long",
-                            year: "numeric",
-                          }
-                        )
+                        "en-IN",
+                        {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )
                       : "—"}
                   </span>
                 </div>

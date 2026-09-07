@@ -6,14 +6,16 @@
 /* underline beside title */
 .section-underline {
   height: 2px;
-  background: #e55a3c; /* adjust to your accent color */
+  background: #e55a3c;
+  /* adjust to your accent color */
 }
 
 /* ===== LEFT BIG CARD ===== */
 .up-main-card {
   position: relative;
   width: 100%;
-  padding-top: 100%; /* 4:3 ratio similar to 640x480 */
+  padding-top: 100%;
+  /* 4:3 ratio similar to 640x480 */
   background-size: cover;
   background-position: center;
   border-radius: 8px;
@@ -163,9 +165,11 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
-.btn-lin{
+
+.btn-lin {
   color: #ffb431;
 }
+
 .up-extra-btn {
   text-decoration: none;
   color: #ffb431;
@@ -176,19 +180,23 @@
   .up-main-card {
     margin-bottom: 16px;
   }
-  .up-extra-image-wrapper{
+
+  .up-extra-image-wrapper {
     display: none;
   }
-  .up-extra-body{
+
+  .up-extra-body {
     display: none;
   }
-  .up-static-banner{
+
+  .up-static-banner {
     padding-top: 35px;
     padding-bottom: 35px;
   }
+
   .up-static-banner {
-  width: 100%;
-  height: 280px;
-  
-}
+    width: 100%;
+    height: 280px;
+
+  }
 }
