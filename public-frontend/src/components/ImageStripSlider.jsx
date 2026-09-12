@@ -17,8 +17,9 @@ export default function ImageStripSlider() {
         const sorted = (data || []).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
         setBanners(sorted.slice(0, 5));
       })
-      .catch((err) => {
-        console.error("Failed to load banners for ImageStripSlider:", err);
+      .catch(() => {
+        if (!mounted) return;
+        setBanners([]);
       });
 
     return () => {

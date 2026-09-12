@@ -19,8 +19,7 @@ export default function EventDetails() {
       setError(null);
       const ev = await getEventById(id);
       setEvent(ev);
-    } catch (err) {
-      console.error("Error loading event:", err);
+    } catch {
       setError("Unable to load event details.");
     } finally {
       setLoading(false);
@@ -30,6 +29,12 @@ export default function EventDetails() {
   useEffect(() => {
     load();
   }, [load]);
+
+  const imgSrc =
+    event && (event.main_image || event.thumbnail_image || event.banner)
+      ? buildImageUrl(event.main_image || event.thumbnail_image || event.banner)
+      : "";
+  const descriptionText = event ? event.description || event.details || event.short_description || "" : "";
 
   return (
     <>
@@ -41,16 +46,17 @@ export default function EventDetails() {
       )}
       <Navbar />
 
-      <div className="container event-detail-page my-4">
-        <button className="event-detail-back" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
+      {event && (
+        <div className="container event-detail-page my-4">
+          <button className="event-detail-back" onClick={() => navigate(-1)}>
+            ← Back
+          </button>
 
-        {imgSrc && (
-          <div className="event-detail-hero">
-            <img src={imgSrc} alt={event.title || "Event image"} />
-          </div>
-        )}
+          {imgSrc && (
+            <div className="event-detail-hero">
+              <img src={imgSrc} alt={event.title || "Event image"} />
+            </div>
+          )}
 
         <h1 className="event-detail-title">{event.title || "Event details"}</h1>
 
@@ -91,6 +97,7 @@ export default function EventDetails() {
           )}
         </div>
       </div>
+      )}
 
       <Footer />
     </>

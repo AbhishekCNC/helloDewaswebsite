@@ -3,7 +3,7 @@
   position: relative;
   width: 100%;
   height: 99vh; /* desktop height */
-  background-image: url("../assets/hero-desktop.png"); /* <-- you will replace with your image name */
+  background-image: url("../assets/hero-desktop.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -14,11 +14,6 @@
 .hero-overlay {
   width: 100%;
   height: 100%;
-  /* background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.55),
-    rgba(0, 0, 0, 0.65)
-  ); */
 }
 
 /* Navbar */
@@ -59,7 +54,7 @@
   background-color: transparent;
   border: 1px solid #ffffff;
   color: #ffffff;
-  font-size: 16px 
+  font-size: 16px;
 }
 
 .hero-contact:hover {
@@ -79,13 +74,13 @@
 .hero-main {
   margin-top: 80px;
 }
-.hero-left{
-    padding-top: 0rem;
+.hero-left {
+  padding-top: 0rem;
 }
 
 .hero-left .hero-welcome {
   font-size: 3.5rem;
-  font-weight:  490;
+  font-weight: 490;
   margin-bottom: 10px;
 }
 
@@ -127,21 +122,22 @@
 .hero-right-card-wrapper {
   margin-top: 40px;
   margin-left: 1rem;
+  display: flex;
   justify-content: flex-end;
 }
 
 .hero-slider-card {
-   background: radial-gradient(circle at top left, #1d1d2f, #05070c);
+  background: radial-gradient(circle at top left, #1d1d2f, #05070c);
   border-radius: 16px;
   padding: 20px 24px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-
-  /* NEW: fix alignment */
   display: flex;
   flex-direction: column;
-  height: 450px; /* you can tweak 300–340 if needed */
+  height: 450px;
   max-width: 380px;
+  box-sizing: border-box;
 }
+
 .hero-slider-body {
   flex: 1;
   display: flex;
@@ -152,11 +148,13 @@
 .hero-slider-label {
   font-size: 1.1rem;
   font-weight: 700;
-  margin-top: 30px;
-
-  /* Keep card height stable even if text is long */
+  line-height: 1.35;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  min-height: calc(1.35em * 3);
+  max-height: calc(1.35em * 3);
   display: -webkit-box;
-        /* max 2 lines */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -165,21 +163,39 @@
 .hero-slider-text {
   font-size: 1rem;
   color: #d7d7d7;
-  margin-top: 8px;
-
-  display: -webkit-box;       /* max 3 lines */
+  line-height: 1.45;
+  margin-top: 0;
+  margin-bottom: 8px;
+  min-height: calc(1.45em * 3);
+  max-height: calc(1.45em * 3);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Footer always sticks to bottom */
-.hero-slider-footer {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.hero-read-btn {
+  text-decoration: none;
+  color: #ffb431;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  transition: color 0.2s ease;
 }
 
+.hero-read-btn:hover {
+  text-decoration: underline;
+  color: #ffd36b;
+}
+
+/* Footer sticks near bottom */
+.hero-slider-footer {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 .hero-slider-header {
   margin-bottom: 12px;
@@ -189,21 +205,20 @@
   color: #ffb431;
   font-weight: 700;
   font-size: 2rem;
+  line-height: 1.1;
 }
-
-
 
 .hero-slider-date {
   font-size: 13px;
   color: #ffb431;
-  margin-top: 10px;
+  margin: 0;
 }
 
 /* Inner dots (small, white) */
 .hero-inner-dots {
   display: flex;
   gap: 6px;
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .hero-inner-dots .dot {
@@ -211,6 +226,8 @@
   height: 8px;
   border-radius: 999px;
   background: #999999;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .hero-inner-dots .dot.active {
@@ -230,32 +247,28 @@
   height: 4px;
   border-radius: 999px;
   background: #777777;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .hero-outer-dots .outer-dot.active {
   background: #ffffff;
 }
+
 .hero-logo-img {
-  height: 8rem;      /* adjust to match your figma */
+  height: 8rem;
   width: auto;
 }
+
 /* Fade animation for slider change */
 .fade-item {
-  animation: fadeInHero 0.5s ease;
-}
-.hero-read-btn{
-  text-decoration: none;
-  color: #ffb431;
-}
-.hero-read-btn:hover {
-  text-decoration: underline;
-  color: #ffd36b;
+  animation: fadeInHero 0.4s ease-out;
 }
 
 @keyframes fadeInHero {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(3px);
   }
   to {
     opacity: 1;
@@ -263,11 +276,6 @@
   }
 }
 
-/* Ensure dots cursor is pointer */
-.hero-inner-dots .dot,
-.hero-outer-dots .outer-dot {
-  cursor: pointer;
-}
 .hero-slider-toggle {
   display: flex;
   gap: 8px;
@@ -281,7 +289,7 @@
   background: transparent;
   color: white;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: 0.2s ease;
 }
 
 .toggle-btn.active {
@@ -295,14 +303,14 @@
   color: black;
 }
 
-
-
 /* ---------- Responsive (Mobile) ---------- */
 
 @media (max-width: 991.98px) {
   .hero-wrapper {
     height: 1020px; /* mobile height */
-    background-image: url("../assets/hero-mobile.png"); /* <-- you will replace with your mobile image */
+    background-image: url("../assets/hero-mobile.png");
+    background-size: cover;
+    background-position: center;
   }
 
   .hero-main {
@@ -317,15 +325,132 @@
     text-align: left;
   }
 
+  .hero-left .hero-welcome {
+    font-size: 1.2rem;
+    font-weight: 520;
+    margin-bottom: 10px;
+  }
+
+  .hero-right-card-wrapper {
+    margin-top: 40px;
+    margin-left: 0rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Restored Narrow Centered Card Matching Original */
   .hero-slider-card {
+    margin-top: 3.5rem;
+    max-width: 340px;
+    width: 100%;
+    height: 460px;
+    min-height: 460px;
+    max-height: 460px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .hero-slider-header {
+    margin-bottom: 12px;
+  }
+
+  .hero-slider-title {
+    font-size: 2rem;
+    line-height: 1.1;
+    color: #ffb431;
+    font-weight: 700;
+  }
+
+  .hero-slider-toggle {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .toggle-btn {
+    font-size: 14px;
+    padding: 4px 10px;
+  }
+
+  .hero-slider-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Reserved Headline Height (3 lines maximum) */
+  .hero-slider-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    min-height: calc(1.35em * 3);
+    max-height: calc(1.35em * 3);
     margin-top: 24px;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
+  /* Reserved Description Height (3 lines maximum) */
+  .hero-slider-text {
+    font-size: 1rem;
+    color: #d7d7d7;
+    line-height: 1.45;
+    min-height: calc(1.45em * 3);
+    max-height: calc(1.45em * 3);
+    margin-top: 0;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-read-btn {
+    font-size: 1rem;
+    margin-top: 2px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer at natural position without large blank spacer */
+  .hero-slider-footer {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hero-slider-date {
+    font-size: 13px;
+    color: #ffb431;
+    margin: 0;
+  }
+
+  .hero-inner-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .hero-outer-dots {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    justify-content: center;
+  }
+
+  /* Navigation & Mobile Navbar */
   .hero-nav {
-    display: none !important; /* hide desktop nav on mobile for now */
+    display: none !important;
   }
 
-  /* Mobile navigation menu */
   .hero-nav-mobile {
     display: none;
     flex-direction: column;
@@ -353,24 +478,29 @@
     border-bottom: none;
   }
 
-  .hero-contact{
-  padding: 6px 14px;
-  font-size: 12px 
+  .hero-contact {
+    padding: 6px 14px;
+    font-size: 12px;
   }
-  .hero-left .hero-welcome {
-  font-size: 1.2rem;
-  font-weight:  520;
-  margin-bottom: 10px;
 }
-.hero-slider-card {
-  margin-top: 3.5rem;
-  max-width: 340px;
-  height: 460px;
-}
-.hero-right-card-wrapper {
-  margin-top: 40px;
-  margin-left: 0rem;
+
+@media (max-width: 360px) {
+  .hero-slider-card {
+    max-width: 310px;
+    padding: 18px 18px;
+  }
+
+  .hero-slider-title {
+    font-size: 1.75rem;
+  }
+
+  .hero-slider-label {
+    font-size: 1rem;
+  }
+
+  .hero-slider-text {
+    font-size: 0.9rem;
+  }
 }
 
 
-}

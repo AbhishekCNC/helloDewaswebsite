@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
   getNewsById,
-  getLatestNews,
   getAllNews,
   getAllBanners,
   buildImageUrl,
@@ -115,8 +114,7 @@ export default function NewsDetails() {
       setError(null);
       const article = await getNewsById(id);
       setNews(article);
-    } catch (err) {
-      console.error("Failed to load news article:", err);
+    } catch {
       setError("Unable to load article.");
     } finally {
       setLoading(false);
@@ -150,8 +148,7 @@ export default function NewsDetails() {
         );
         setBanners(active);
       }
-    } catch (err) {
-      console.error("Failed to load sidebar content:", err);
+    } catch {
       setSidebarError("Unable to load latest news.");
     } finally {
       setSidebarLoading(false);

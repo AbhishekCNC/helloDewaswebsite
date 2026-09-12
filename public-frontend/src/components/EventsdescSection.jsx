@@ -12,8 +12,8 @@ export default function EventsSection() {
       try {
         const data = await getAllEvents();
         setEvents(data);
-      } catch (err) {
-        console.error("Failed to load events", err);
+      } catch {
+        setEvents([]);
       } finally {
         setLoading(false);
       }

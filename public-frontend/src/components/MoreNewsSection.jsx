@@ -7,6 +7,14 @@ import "./MoreNewsSection.css";
 const INLINE_AD_INTERVAL = 8;
 const MAX_INLINE_ADS = 3;
 
+function getCleanText(item, maxLen = 120) {
+  const raw = item?.short_description || item?.description || "";
+  const cleaned = raw.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  if (!cleaned) return "";
+  if (cleaned.length <= maxLen) return cleaned;
+  return cleaned.slice(0, maxLen).trim() + "…";
+}
+
 function BannerSlider({ banners, startOffset = 0, slotIndex = 0 }) {
   const [index, setIndex] = useState(0);
   const [hasError, setHasError] = useState(false);
@@ -175,8 +183,9 @@ export default function MoreNewsSection() {
 
         setNews(sortedNews);
         setBanners(bannerData);
-      } catch (err) {
-        console.error("MoreNewsSection load error:", err);
+      } catch {
+        setNews([]);
+        setBanners([]);
       } finally {
         setLoading(false);
       }
@@ -299,11 +308,7 @@ export default function MoreNewsSection() {
               </div>
               <h3 className="mn-main-title">{featured.title}</h3>
               <p className="mn-main-desc">
-                {(featured.short_description || featured.description || "")
-                  .slice(0, 210)
-                  .trim()}
-                {(featured.short_description || featured.description || "")
-                  .length > 210 && "…"}
+                {getCleanText(featured, 210)}
               </p>
             </div>
           </div>
@@ -317,10 +322,10 @@ export default function MoreNewsSection() {
               onClick={() => openNews(item._id)}
             >
               <div className="mn-side-thumb-wrapper">
-                {item.main_image || item.thumbnail || item.main_image ? (
+                {item.main_image || item.thumbnail || item.thumbnail_image ? (
                   <img
                     src={buildImageUrl(
-                      item.main_image || item.thumbnail || item.main_image
+                      item.main_image || item.thumbnail || item.thumbnail_image
                     )}
                     alt={item.title}
                   />
@@ -338,11 +343,7 @@ export default function MoreNewsSection() {
                 </div>
                 <div className="mn-title-small">{item.title}</div>
                 <div className="mn-desc-small">
-                  {(item.short_description || item.description || "")
-                    .slice(0, 90)
-                    .trim()}
-                  {(item.short_description || item.description || "").length >
-                    90 && "…"}
+                  {getCleanText(item, 90)}
                 </div>
               </div>
             </div>
@@ -388,11 +389,7 @@ export default function MoreNewsSection() {
                   </div>
                   <h4 className="mn-grid-title">{item.title}</h4>
                   <p className="mn-grid-desc">
-                    {(item.short_description || item.description || "")
-                      .slice(0, 120)
-                      .trim()}
-                    {(item.short_description || item.description || "").length >
-                      120 && "…"}
+                    {getCleanText(item, 120)}
                   </p>
                 </div>
               </div>
@@ -414,7 +411,7 @@ export default function MoreNewsSection() {
         })}
       </div>
 
-      {/* Mobile/Tablet responsive grid with inline advertisements */}
+      {/* Mobile/Tablet responsive grid/list with inline advertisements */}
       <div className="mna-grid-wrapper">
         {small.map((item, idx) => {
           const isInterval = (idx + 1) % INLINE_AD_INTERVAL === 0;
@@ -424,39 +421,71 @@ export default function MoreNewsSection() {
           const shouldShowAd =
             isInterval && hasMoreNews && isWithinMax && activeBanners.length > 0;
 
+          const imageSrc =
+            item.main_image || item.thumbnail_image || item.thumbnail;
+          const categoryName = item.categories || item.category;
+          const cleanDesc = getCleanText(item, 120);
+
           return (
             <React.Fragment key={item._id || `small-${idx}`}>
               <div
                 className="mna-grid-card"
                 onClick={() => openNews(item._id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openNews(item._id);
+                  }
+                }}
+                aria-label={item.title}
               >
                 <div className="mna-grid-image-wrapper">
-                  {item.main_image || item.thumbnail_image ? (
+                  {imageSrc ? (
                     <img
-                      src={buildImageUrl(
-                        item.main_image || item.thumbnail_image
-                      )}
+                      src={buildImageUrl(imageSrc)}
                       alt={item.title}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                        const fallback =
+                          e.currentTarget.parentElement?.querySelector(
+                            ".mna-fallback-placeholder"
+                          );
+                        if (fallback) fallback.style.display = "flex";
+                      }}
                     />
                   ) : null}
+                  <div
+                    className="mna-fallback-placeholder"
+                    style={{ display: imageSrc ? "none" : "flex" }}
+                  >
+                    <span>Hello Dewas</span>
+                  </div>
                 </div>
                 <div className="mna-grid-body">
-                  <div className="mna-date">
-                    {new Date(
-                      item.published_at || item.createdAt
-                    ).toLocaleDateString("en-IN", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
+                  <div className="mna-meta-row">
+                    <span className="mna-date">
+                      {new Date(
+                        item.published_at || item.createdAt
+                      ).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    {categoryName && (
+                      <span className="mna-category-badge" title={categoryName}>
+                        {categoryName}
+                      </span>
+                    )}
                   </div>
-                  <h4 className="mna-grid-title">{item.title}</h4>
+                  <h4 className="mna-grid-title" title={item.title}>
+                    {item.title}
+                  </h4>
                   <p className="mna-grid-desc">
-                    {(item.short_description || item.description || "")
-                      .slice(0, 120)
-                      .trim()}
-                    {(item.short_description || item.description || "").length >
-                      120 && "…"}
+                    {cleanDesc}
                   </p>
                 </div>
               </div>

@@ -15,8 +15,7 @@ export default function NewspaperPdfSection() {
         setLoading(true);
         const latest = await getLatestNewspapers(4);
         setPapers(latest || []);
-      } catch (err) {
-        console.error("Error loading newspapers:", err);
+      } catch {
         setError("Unable to load newspaper PDFs.");
       } finally {
         setLoading(false);

@@ -19,19 +19,14 @@ export default function CityNewsSection() {
     async function load() {
       try {
         const data = await getAllNews(4);
-        console.log("[CityNewsSection] Fetched all news:", data);
 
-        // 🔍 filter by categories field (case-insensitive, also matches phrases like "Dewas City")
+        // filter by categories field (case-insensitive, matches phrases like "Dewas City")
         const dewasNews = (data || []).filter((item) => {
           const cats = (item.categories || "").toLowerCase();
-          const match = cats === "dewas" || cats.includes("dewas");
-          console.log(`[CityNewsSection] Checking "${item.title}" category="${item.categories}" → ${match}`);
-          return match;
+          return cats === "dewas" || cats.includes("dewas");
         });
 
-        console.log("[CityNewsSection] Filtered dewas news count:", dewasNews.length);
-
-        // 🕒 sort latest first by published_at (fallback to createdAt if needed)
+        // sort latest first by published_at (fallback to createdAt)
         const sorted = [...dewasNews].sort((a, b) => {
           const da = new Date(a.published_at || a.createdAt || 0);
           const db = new Date(b.published_at || b.createdAt || 0);
@@ -40,8 +35,8 @@ export default function CityNewsSection() {
 
         // Limit to 4 cards
         setNews(sorted.slice(0, 4));
-      } catch (err) {
-        console.error("Error loading city news:", err);
+      } catch {
+        setNews([]);
       } finally {
         setLoading(false);
       }

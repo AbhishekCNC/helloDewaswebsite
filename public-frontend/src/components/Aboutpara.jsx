@@ -1,7 +1,4 @@
 import "./Aboutpara.css";
-import history from "../assets/heritage.png";
-import agriculture from "../assets/heritage.png";
-import personality from "../assets/heritage.png";
 
 const AboutCards = () => {
   return (

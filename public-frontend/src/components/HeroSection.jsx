@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import "./HeroSection.css";
 import { Link } from "react-router-dom";
 import logo from "../assets/hello-dewas-logo.png";
@@ -8,44 +8,54 @@ export default function HeroSection({ latestNews, latestEvents }) {
   const [activeType, setActiveType] = useState("news");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const touchStartX = useRef(null);
 
   // decide which list is active
-  const activeList =
-    activeType === "news" ? latestNews || [] : latestEvents || [];
+  const activeList = useMemo(() => {
+    return activeType === "news" ? latestNews || [] : latestEvents || [];
+  }, [activeType, latestNews, latestEvents]);
 
   const activeItem =
     activeList && activeList.length > 0 ? activeList[currentIndex] : null;
 
-  // helper: truncate text by words and append ellipsis when truncated
-  const truncateWords = (text, limit) => {
-    if (!text) return "";
-    const words = String(text).split(/\s+/).filter(Boolean);
-    if (words.length <= limit) return words.join(" ");
-    return words.slice(0, limit).join(" ") + "...";
-  };
-
-  // auto-slide every 2 seconds
+  // auto-slide every 3.5 seconds
   useEffect(() => {
-    if (!activeList || activeList.length === 0) return;
-
-    // reset to first item when list or type changes
-    setCurrentIndex(0);
+    if (!activeList || activeList.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1 < activeList.length ? prev + 1 : 0));
-    }, 2000); // 2 seconds
+    }, 3500);
 
     return () => clearInterval(interval);
-  }, [activeType, latestNews, latestEvents]);
+  }, [activeList]);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    if (Math.abs(diff) > 40 && activeList.length > 1) {
+      if (diff > 0) {
+        // Swipe left -> Next slide
+        setCurrentIndex((prev) => (prev + 1 < activeList.length ? prev + 1 : 0));
+      } else {
+        // Swipe right -> Prev slide
+        setCurrentIndex((prev) => (prev > 0 ? prev - 1 : activeList.length - 1));
+      }
+    }
+    touchStartX.current = null;
+  };
 
   return (
     <div className="hero-wrapper">
       <div className="hero-overlay">
         {/* Top Navbar */}
         <header className="hero-navbar container d-flex align-items-center justify-content-between">
-          {/* Left: Logo (you will replace with real image) */}
+          {/* Left: Logo */}
           <div className="hero-logo">
-            {/* TEMP text, you will replace with <img /> */}
             <img
               src={logo}
               alt="hello! Dewas"
@@ -53,7 +63,7 @@ export default function HeroSection({ latestNews, latestEvents }) {
             />
           </div>
 
-          {/* Center: Nav links (desktop only for now) */}
+          {/* Center: Nav links (desktop only) */}
           <nav className="hero-nav d-none d-lg-flex gap-4">
             <a href="/" className="hero-nav-link">
               Home
@@ -80,15 +90,16 @@ export default function HeroSection({ latestNews, latestEvents }) {
 
           {/* Right: Search + Contact button */}
           <div className="hero-right d-flex align-items-center gap-3">
-            <button className="hero-search-btn d-none d-lg-flex align-items-center justify-content-center">
+            <button className="hero-search-btn d-none d-lg-flex align-items-center justify-content-center" aria-label="Search">
               <i className="bi bi-search"></i>
             </button>
             <button className="hero-contact">Contact With Us</button>
 
-            {/* Mobile burger icon (only visible on small screens) */}
+            {/* Mobile burger icon */}
             <button 
               className="hero-burger d-lg-none"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle Navigation"
             >
               ☰
             </button>
@@ -141,12 +152,25 @@ export default function HeroSection({ latestNews, latestEvents }) {
               </div>
             </div>
 
-            {/* Right side slider card placeholder */}
+            {/* Right side slider card */}
             <div className="col-lg-4 offset-lg-1 hero-right-card-wrapper">
-              <div className="hero-slider-card">
-                <div className="hero-slider-header d-flex justify-content-between align-items-center">
+              <div 
+                className="hero-slider-card"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
+                {/* 1. Header: 2-line Title + Toggle Tabs */}
+                <div className="hero-slider-header d-flex justify-content-between align-items-start">
                   <span className="hero-slider-title">
-                    {activeType === "news" ? "Latest News" : "Latest Events"}
+                    {activeType === "news" ? (
+                      <>
+                        Latest<br />News
+                      </>
+                    ) : (
+                      <>
+                        Latest<br />Events
+                      </>
+                    )}
                   </span>
 
                   <div className="hero-slider-toggle">
@@ -158,6 +182,7 @@ export default function HeroSection({ latestNews, latestEvents }) {
                         setActiveType("news");
                         setCurrentIndex(0);
                       }}
+                      type="button"
                     >
                       News
                     </button>
@@ -170,83 +195,119 @@ export default function HeroSection({ latestNews, latestEvents }) {
                         setActiveType("events");
                         setCurrentIndex(0);
                       }}
+                      type="button"
                     >
                       Events
                     </button>
                   </div>
                 </div>
 
-                <div className="hero-slider-body fade-item">
+                {/* Body Content */}
+                <div className="hero-slider-body fade-item" key={`${activeType}-${currentIndex}`}>
                   {activeItem ? (
                     <>
-                      <p className="hero-slider-label">{truncateWords(activeItem.title, 13)}</p>
+                      {/* 2. Headline area (max 3 lines reserved) */}
+                      <p className="hero-slider-label">
+                        {activeItem.title || ""}
+                      </p>
+
+                      {/* 3. Description area (max 3 lines reserved) */}
                       <p className="hero-slider-text">
-                        {truncateWords(activeItem.short_description, 23)}
-                        <Link
-                          to={`/news/${activeItem._id}`}
-                          className="hero-read-btn"
-                        >
-                         <br/> <br />Read More →
-                        </Link>
+                        {activeItem.short_description || activeItem.description || " "}
                       </p>
-                      <p className="hero-slider-date">
-                        {activeItem.published_at
-                          ? `📅 ${new Date(
-                              activeItem.published_at
-                            ).toLocaleDateString("en-IN", {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            })}`
-                          : "📅 —"}
-                      </p>
+
+                      {/* 4. Read More link */}
+                      <Link
+                        to={
+                          activeType === "news"
+                            ? `/news/${activeItem._id}`
+                            : `/events`
+                        }
+                        className="hero-read-btn"
+                      >
+                        Read More →
+                      </Link>
+
+                      {/* 5. Footer containing Date & Dots at original spacing */}
+                      <div className="hero-slider-footer">
+                        <p className="hero-slider-date">
+                          {activeItem.published_at || activeItem.createdAt || activeItem.date || activeItem.event_date
+                            ? `📅 ${new Date(
+                                activeItem.published_at || activeItem.createdAt || activeItem.date || activeItem.event_date
+                              ).toLocaleDateString("en-IN", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })}`
+                            : "📅 —"}
+                        </p>
+
+                        {/* Inner dots */}
+                        <div className="hero-inner-dots" aria-label="Slide indicators">
+                          {activeList && activeList.length > 0 ? (
+                            activeList.map((item, idx) => (
+                              <span
+                                key={item._id || idx}
+                                className={`dot ${
+                                  idx === currentIndex ? "active" : ""
+                                }`}
+                                onClick={() => setCurrentIndex(idx)}
+                                role="button"
+                                tabIndex={0}
+                                aria-label={`Go to slide ${idx + 1}`}
+                              ></span>
+                            ))
+                          ) : (
+                            <span className="dot active"></span>
+                          )}
+                        </div>
+                      </div>
                     </>
                   ) : (
-                    <>
+                    <div className="hero-slider-empty-wrap">
                       <p className="hero-slider-label">
                         {activeType === "news"
                           ? "No news available"
                           : "No events available"}
                       </p>
                       <p className="hero-slider-text">
-                        Please add some {activeType} from the admin panel.
+                        Please check back soon for latest {activeType}.
                       </p>
-                    </>
+                      <div className="hero-slider-footer">
+                        <p className="hero-slider-date">📅 —</p>
+                        <div className="hero-inner-dots">
+                          <span className="dot active"></span>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
 
-                {/* Inner dots (for inner carousel later) */}
-                <div className="hero-inner-dots">
-                  {activeList && activeList.length > 0 ? (
-                    activeList.map((item, idx) => (
-                      <span
-                        key={idx}
-                        className={`dot ${
-                          idx === currentIndex ? "active" : ""
-                        }`}
-                        onClick={() => setCurrentIndex(idx)}
-                      ></span>
-                    ))
-                  ) : (
-                    <>
-                      <span className="dot active"></span>
-                    </>
-                  )}
-                </div>
-
-                {/* Outer slider indicator (for switching between Latest News / Latest Event later) */}
+                {/* Outer slider indicator */}
                 <div className="hero-outer-dots">
                   <span
                     className={`outer-dot ${
                       activeType === "news" ? "active" : ""
                     }`}
-                    onClick={() => setActiveType("news")}
+                    onClick={() => {
+                      setActiveType("news");
+                      setCurrentIndex(0);
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Switch to Latest News"
                   ></span>
                   <span
                     className={`outer-dot ${
                       activeType === "events" ? "active" : ""
                     }`}
-                    onClick={() => setActiveType("events")}
+                    onClick={() => {
+                      setActiveType("events");
+                      setCurrentIndex(0);
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Switch to Latest Events"
                   ></span>
                 </div>
               </div>
@@ -257,3 +318,5 @@ export default function HeroSection({ latestNews, latestEvents }) {
     </div>
   );
 }
+
+

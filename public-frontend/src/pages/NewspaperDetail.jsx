@@ -29,8 +29,7 @@ export default function NewspaperDetail() {
       ]);
       setPaper(current);
       setAllPapers(list || []);
-    } catch (err) {
-      console.error("Error loading newspaper detail:", err);
+    } catch {
       setError("Unable to load this newspaper.");
     } finally {
       setLoading(false);

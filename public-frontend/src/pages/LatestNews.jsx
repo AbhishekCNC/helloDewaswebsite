@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import LatestNewsContent from "../components/LatestNewsContent";
 import Footer from "../components/Footer";  
 import Navbar from "../components/Navbar";
@@ -10,23 +10,33 @@ const Latest = () => {
   const [error, setError] = useState(null);
   const [reloadKey, setReloadKey] = useState(0);
 
-  const loadData = useCallback(async () => {
-    try {
-      setInitialLoading(true);
-      setError(null);
-      await getAllNews();
-      setInitialLoading(false);
-    } catch (err) {
-      console.error("Latest news load error:", err);
-      setError("Unable to load latest news. Please check your connection.");
-    }
-  }, []);
-
   useEffect(() => {
-    loadData();
-  }, [loadData, reloadKey]);
+    let ignore = false;
+
+    async function fetchData() {
+      try {
+        await getAllNews();
+        if (!ignore) {
+          setError(null);
+          setInitialLoading(false);
+        }
+      } catch {
+        if (!ignore) {
+          setError("Unable to load latest news. Please check your connection.");
+        }
+      }
+    }
+
+    fetchData();
+
+    return () => {
+      ignore = true;
+    };
+  }, [reloadKey]);
 
   const handleRetry = () => {
+    setInitialLoading(true);
+    setError(null);
     setReloadKey((prev) => prev + 1);
   };
 

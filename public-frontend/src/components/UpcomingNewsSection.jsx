@@ -3,20 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { getAllNews, buildImageUrl } from "../api/api";
 import "./UpcomingNewsSection.css";
 
-// Create a small set of candidate URLs to try when an image fails to load.
-function makeCandidates(path) {
-  if (!path) return [];
-  const normalized = path.replace(/\\/g, "/");
-  const base = buildImageUrl(normalized);
-  const candidates = [base];
-  try {
-    // try swapping localhost <-> 127.0.0.1 in case of host resolution issues
-    if (base.includes("localhost")) candidates.push(base.replace("localhost", "127.0.0.1"));
-    if (base.includes("127.0.0.1")) candidates.push(base.replace("127.0.0.1", "localhost"));
-  } catch (e) { }
-  return candidates.filter(Boolean);
-}
-
 export default function UpcomingNewsSection() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,11 +14,9 @@ export default function UpcomingNewsSection() {
       try {
         setLoading(true);
         const data = await getAllNews();
-        console.log("[UpcomingNewsSection] fetched news:", data);
         setNews(data || []);
         setError(null);
-      } catch (err) {
-        console.error("Error loading all news:", err);
+      } catch {
         setError("Unable to load news.");
       } finally {
         setLoading(false);

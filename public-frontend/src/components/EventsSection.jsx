@@ -19,8 +19,8 @@ export default function EventsSection() {
         );
 
         setEvents(sorted);
-      } catch (err) {
-        console.error("Error loading events:", err);
+      } catch {
+        setEvents([]);
       } finally {
         setLoading(false);
       }

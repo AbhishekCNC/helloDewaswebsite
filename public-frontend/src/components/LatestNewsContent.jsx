@@ -187,8 +187,7 @@ export default function LatestNewsContent() {
         (b) => b && b.display !== false && b.status !== "inactive"
       );
       setBanners(activeBanners);
-    } catch (err) {
-      console.error("LatestNewsContent fetch error:", err);
+    } catch {
       setError("Unable to load latest news. Please try again.");
     } finally {
       setLoading(false);
