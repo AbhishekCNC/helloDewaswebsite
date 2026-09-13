@@ -16,6 +16,8 @@ import Eating from "./pages/Eating";
 import Latest from "./pages/LatestNews";
 import Events from "./pages/Events";
 import Stories from "./pages/Stories";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 export default function App() {
   return (
     <Routes>
@@ -36,8 +38,8 @@ export default function App() {
       <Route path="/latest-news" element={<Latest />} />
       <Route path="/events" element={<Events />} />
       <Route path="/stories" element={<Stories />} />
-
-
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
     </Routes>
   );
 }

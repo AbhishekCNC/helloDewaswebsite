@@ -34,6 +34,8 @@ const Footer = () => {
             <a href="\explore"><li>Sight Seeing</li></a>
             <a href="\events"><li>Events</li></a>
             <a href="\stories"><li>Stories</li></a>
+            <Link to="/privacy-policy"><li>Privacy Policy & Security</li></Link>
+            <Link to="/terms-and-conditions"><li>Terms & Conditions</li></Link>
           </ul>
         </div>
 
