@@ -150,6 +150,14 @@ function AdBannerSlider({ banners, startOffset = 0, slotIndex = 0 }) {
   );
 }
 
+function getCleanText(item, maxLen = 120) {
+  const raw = item?.short_description || item?.description || "";
+  const cleaned = raw.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  if (!cleaned) return "";
+  if (cleaned.length <= maxLen) return cleaned;
+  return cleaned.slice(0, maxLen).trim() + "…";
+}
+
 export default function LatestNewsContent() {
   const [news, setNews] = useState([]);
   const [banners, setBanners] = useState([]);
@@ -235,10 +243,10 @@ export default function LatestNewsContent() {
     );
   }
 
-  // Editorial Partitioning
+  // Editorial Partitioning: 1 Lead Story + 4 Secondary Stories + Remaining in Grid
   const leadStory = news[0] || null;
-  const secondaryStories = news.slice(1, 3);
-  const moreNews = news.slice(3);
+  const secondaryStories = news.slice(1, 5);
+  const moreNews = news.slice(5);
 
   return (
     <div className="ln-page-wrapper">
@@ -264,7 +272,7 @@ export default function LatestNewsContent() {
         {leadStory && (
           <section className="ln-top-stories-section" aria-label="Top Stories">
             <div className="ln-top-stories-grid">
-              {/* Lead Story (65% width on desktop) */}
+              {/* Lead Story */}
               <Link
                 to={`/news/${leadStory._id}`}
                 className="ln-lead-card"
@@ -299,10 +307,7 @@ export default function LatestNewsContent() {
                   </div>
                   <h2 className="ln-lead-title">{leadStory.title}</h2>
                   <p className="ln-lead-desc">
-                    {(leadStory.short_description || leadStory.description || "")
-                      .slice(0, 220)
-                      .trim()}
-                    {(leadStory.short_description || leadStory.description || "").length > 220 && "…"}
+                    {getCleanText(leadStory, 220)}
                   </p>
                   <span className="ln-read-more">Read Full Story →</span>
                 </div>
@@ -324,10 +329,21 @@ export default function LatestNewsContent() {
                             alt={item.title}
                             className="ln-secondary-thumb"
                             loading="lazy"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                              const placeholder = e.currentTarget.nextElementSibling;
+                              if (placeholder) placeholder.style.display = "flex";
+                            }}
                           />
-                        ) : (
-                          <div className="ln-image-placeholder small">News</div>
-                        )}
+                        ) : null}
+                        <div
+                          className="ln-image-placeholder small"
+                          style={{
+                            display: (item.main_image || item.thumbnail || item.thumbnail_image) ? "none" : "flex",
+                          }}
+                        >
+                          News
+                        </div>
                       </div>
 
                       <div className="ln-secondary-body">
@@ -348,10 +364,7 @@ export default function LatestNewsContent() {
                         </div>
                         <h3 className="ln-secondary-title">{item.title}</h3>
                         <p className="ln-secondary-desc">
-                          {(item.short_description || item.description || "")
-                            .slice(0, 110)
-                            .trim()}
-                          {(item.short_description || item.description || "").length > 110 && "…"}
+                          {getCleanText(item, 95)}
                         </p>
                       </div>
                     </Link>
@@ -413,10 +426,7 @@ export default function LatestNewsContent() {
                         </div>
                         <h3 className="ln-grid-title">{item.title}</h3>
                         <p className="ln-grid-desc">
-                          {(item.short_description || item.description || "")
-                            .slice(0, 115)
-                            .trim()}
-                          {(item.short_description || item.description || "").length > 115 && "…"}
+                          {getCleanText(item, 115)}
                         </p>
                       </div>
                     </Link>

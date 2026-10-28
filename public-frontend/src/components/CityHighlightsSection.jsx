@@ -97,7 +97,7 @@ administraion to lead country.</p>
                   <div className="ch-card-body">
                     <h5 className="ch-card-title">{item.title}</h5>
                     <p className="ch-card-subtitle">{item.subtitle}</p>
-                    <p className="ch-card-Twitter"><a href=""><i class="bi bi-twitter-x"></i></a></p>
+                    <p className="ch-card-Twitter"><a href="#!"><i className="bi bi-twitter-x"></i></a></p>
                     <p className="ch-card-details">
                       {item.details.split("\n").map((line, idx) => (
                         <span key={idx}>

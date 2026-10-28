@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllNews, buildImageUrl } from "../api/api";
+import frame01 from "../assets/frame01.png";
 import "./UpcomingNewsSection.css";
 
 export default function UpcomingNewsSection() {
@@ -31,6 +32,14 @@ export default function UpcomingNewsSection() {
     const words = String(text).split(/\s+/).filter(Boolean);
     if (words.length <= limit) return words.join(" ");
     return words.slice(0, limit).join(" ") + "...";
+  };
+
+  const getCleanDesc = (item, limit = 16) => {
+    if (!item) return "";
+    const raw = item.short_description || item.description || "";
+    const cleaned = raw.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+    if (!cleaned) return "";
+    return truncateWords(cleaned, limit);
   };
 
   if (loading) {
@@ -74,9 +83,9 @@ export default function UpcomingNewsSection() {
         <div className="flex-grow-1 ms-3 section-underline" />
       </div>
 
-      <div className="row g-4">
+      <div className="row g-4 align-items-stretch">
         {/* LEFT: BIG CARD */}
-        <div className="col-lg-5">
+        <div className="col-lg-5 d-flex flex-column">
           <div
             className="up-main-card"
             onClick={() => mainNews && openNews(mainNews._id)}
@@ -100,7 +109,7 @@ export default function UpcomingNewsSection() {
         </div>
 
         {/* CENTER: 4 SMALL NEWS ITEMS */}
-        <div className="col-lg-4">
+        <div className="col-lg-4 d-flex flex-column">
           <div className="up-list-wrapper">
             {sideNews.map((item) => (
               <div
@@ -119,14 +128,14 @@ export default function UpcomingNewsSection() {
                 </div>
                 <div className="up-list-text">
                   <div className="up-list-date">
-                    {new Date(item.published_at).toLocaleDateString("en-IN", {
+                    {new Date(item.published_at || item.createdAt || Date.now()).toLocaleDateString("en-IN", {
                       day: "2-digit",
                       month: "short",
                       year: "numeric",
                     })}
                   </div>
-                  <h4 className="up-list-title">{truncateWords(item.title, 10)}</h4>
-                  <p className="up-list-desc">{truncateWords(item.short_description, 20)}</p>
+                  <h4 className="up-list-title">{truncateWords(item.title, 12)}</h4>
+                  <p className="up-list-desc">{getCleanDesc(item, 16)}</p>
                 </div>
               </div>
             ))}
@@ -134,7 +143,7 @@ export default function UpcomingNewsSection() {
         </div>
 
         {/* RIGHT: STATIC INFO BOXES (PLACEHOLDER FOR NOW) */}
-        <div className="col-lg-3 ">
+        <div className="col-lg-3 d-flex flex-column">
 
           <div className="up-static-box mb-3">
             <p className="mb-1 small text-muted">
@@ -146,13 +155,22 @@ export default function UpcomingNewsSection() {
             <p className="mb-1 small text-muted">Region covered by city</p>
             <button className="btn btn-dark w-100">50 sq</button>
           </div>
-          <div className="up-static-box mb-4">
+          <div className="up-static-box mb-3">
             <p className="mb-1 small text-muted">
               Total people living in the city
             </p>
             <button className="btn btn-dark w-100">2.9 lac</button>
           </div>
-          <div className="up-static-banner">
+          <div
+            className="up-static-banner flex-grow-1"
+            onClick={() => navigate("/news")}
+            style={{ cursor: "pointer" }}
+          >
+            <img
+              src={frame01}
+              alt="Hello Dewas - Best local news & updates platform"
+              className="up-static-banner-img"
+            />
           </div>
         </div>
       </div>
@@ -175,14 +193,14 @@ export default function UpcomingNewsSection() {
               </div>
               <div className="up-extra-body">
                 <div className="up-extra-date">
-                  {new Date(item.published_at).toLocaleDateString("en-IN", {
+                  {new Date(item.published_at || item.createdAt || Date.now()).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
                   })}
                 </div>
                 <h4 className="up-extra-title">{truncateWords(item.title, 10)}</h4>
-                <p className="up-extra-desc">{truncateWords(item.short_description, 20)}</p>
+                <p className="up-extra-desc">{getCleanDesc(item, 20)}</p>
                 <button className="btn btn-link p-0">Read More</button>
               </div>
             </div>
